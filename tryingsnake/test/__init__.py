@@ -1,23 +1,23 @@
 import unittest
-from operator import add, div
+from operator import add, truediv
 from tryingsnake import *
 
 
 class TryTestCase(unittest.TestCase):
     def test_failure_should_be_failure(self):
-        self.assertTrue(Try(div, 1, 0).isFailure)
-        self.assertFalse(Try(div, 1, 0).isSuccess)
+        self.assertTrue(Try(truediv, 1, 0).isFailure)
+        self.assertFalse(Try(truediv, 1, 0).isSuccess)
 
     def test_success_should_be_success(self):
         self.assertFalse(Try(add, 1, -1).isFailure)
-        self.assertTrue(Try(div, 1, -1).isSuccess)
+        self.assertTrue(Try(truediv, 1, -1).isSuccess)
 
     def test_get_should_raise_an_exception_if_failure(self):
-        self.assertRaises(ZeroDivisionError, Try(div, 1, 0).get)
+        self.assertRaises(ZeroDivisionError, Try(truediv, 1, 0).get)
         self.assertRaises(TypeError, Try(add, "1", 0).get)
 
     def test_get_should_return_value_if_success(self):
-        self.assertEqual(Try(div, 4, 2).get(), 2)
+        self.assertEqual(Try(truediv, 4, 2).get(), 2)
         self.assertEqual(Try(add, "1", "2").get(), "12")
 
     def test_repr(self):
