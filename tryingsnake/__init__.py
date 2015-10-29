@@ -261,7 +261,7 @@ def Try(f, *args, **kwargs):
     >>> Try(truediv, 1, 0) # doctest:+ELLIPSIS
     Failure(ZeroDivisionError(...))
     >>> Try(add, 1, 2)
-    Success(3L)
+    Success(3)
     """
     try:
         return Success(f(*args, **kwargs))
