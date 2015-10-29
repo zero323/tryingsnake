@@ -106,14 +106,14 @@ class TryTestCase(unittest.TestCase):
         identity = lambda x: x
         self.assertRaises(NotImplementedError, _try.map, identity)
         self.assertRaises(NotImplementedError, _try.flatMap, identity)
-        self.assertRaises(NotImplementedError, _try.get, identity)
+        self.assertRaises(NotImplementedError, _try.get)
         self.assertRaises(NotImplementedError, _try.filter, identity)
         self.assertRaises(NotImplementedError, _try.map, identity)
         self.assertRaises(NotImplementedError, _try.map, identity)
         self.assertRaises(NotImplementedError, _try.recover, identity)
-        self.assertRaises(NotImplementedError, _try.recoverWith(), identity)
+        self.assertRaises(NotImplementedError, _try.recoverWith, identity)
         self.assertRaises(NotImplementedError, _try.getOrElse, None)
-        self.assertRaises(NotImplementedError, _try.getOr, Success(1))
+        self.assertRaises(NotImplementedError, _try.orElse, Success(1))
 
 
 if __name__ == '__main__':

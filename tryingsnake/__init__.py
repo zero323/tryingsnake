@@ -33,19 +33,46 @@ class _Try(object):
         """
         return self._isSuccess
 
-    def flatMap(self, f):
-        """ Apply potentially function  returning _Try to the value.
+    def get(self):
+        """If this is Success get wrapped value otherwise
+        throw stored exception
 
-        :param f: function to be applied.
-        :return: self if this is a Failure otherwise f applied to self.get
+        :return: stored value
 
-        >>> from operator import add, truediv
-        >>> Success(1).flatMap(lambda x: Try(add, x, 1))
-        Success(2)
-        >>> Failure(Exception("e")).flatMap(lambda x: Try(add, x, 1))
-        Failure(Exception('e',))
-        >>> Success(1).flatMap(lambda x: Try(truediv, x, 0)) # doctest:+ELLIPSIS
-        Failure(ZeroDivisionError(...))
+        >>> Success(1).get()
+        1
+        >>> Failure(Exception("e")).get()
+        Traceback (most recent call last):
+            ...
+        Exception: e
+        """
+        raise NotImplementedError
+
+    def getOrElse(self, default):
+        """If this is a Success get stored value otherwise
+        return default
+
+        :param default: value to return if this is a Failure
+        :return:
+
+        >>> Success(1).getOrElse(0)
+        1
+        >>> Failure(Exception("e")).getOrElse(0)
+        0
+        """
+        raise NotImplementedError
+
+    def orElse(self, default):
+        """If this is a Success return self otherwise
+        default
+
+        :param default:
+        :return:
+
+        >>> Success(1).orElse(Success(0))
+        Success(1)
+        >>> Failure(Exception("e")).orElse(Success(0))
+        Success(0)
         """
         raise NotImplementedError
 
@@ -64,7 +91,23 @@ class _Try(object):
         >>> Success("1").map(f)
         Failure(Exception('e',))
         """
-        return NotImplementedError
+        raise NotImplementedError
+
+    def flatMap(self, f):
+        """ Apply potentially function  returning _Try to the value.
+
+        :param f: function to be applied.
+        :return: self if this is a Failure otherwise f applied to self.get
+
+        >>> from operator import add
+        >>> Success(1).flatMap(lambda x: Try(add, x, 1))
+        Success(2)
+        >>> Failure(Exception("e")).flatMap(lambda x: Try(add, x, 1))
+        Failure(Exception('e',))
+        >>> Success(1).flatMap(lambda x: Try(add, x, "0")) # doctest:+ELLIPSIS
+        Failure(TypeError(...))
+        """
+        raise NotImplementedError
 
     def filter(self, f, exception_cls=Exception, msg=None):
         """Convert this to Failure if f(self.get()) evaluates to False
@@ -124,21 +167,6 @@ class _Try(object):
             ...
         TypeError: Cannot fail Success
         >>> Failure(Exception("e")).failed()
-        Traceback (most recent call last):
-            ...
-        Exception: e
-        """
-        raise NotImplementedError
-
-    def get(self):
-        """If this is Success get wrapped value otherwise
-        throw stored exception
-
-        :return: stored value
-
-        >>> Success(1).get()
-        1
-        >>> Failure(Exception("e")).get()
         Traceback (most recent call last):
             ...
         Exception: e
