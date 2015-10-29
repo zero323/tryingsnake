@@ -44,8 +44,8 @@ class _Try(object):
         Success(2)
         >>> Failure(Exception("e")).flatMap(lambda x: Try(add, x, 1))
         Failure(Exception('e',))
-        >>> Success(1).flatMap(lambda x: Try(truediv, x, 0))
-        Failure(ZeroDivisionError('division by zero',))
+        >>> Success(1).flatMap(lambda x: Try(truediv, x, 0)) # doctest:+ELLIPSIS
+        Failure(ZeroDivisionError(...))
         """
         raise NotImplementedError
 
@@ -230,8 +230,8 @@ def Try(f, *args, **kwargs):
     :return: Either success or Failure
 
     >>> from operator import add, truediv
-    >>> Try(truediv, 1L, 0L)
-    Failure(ZeroDivisionError('division by zero',))
+    >>> Try(truediv, 1L, 0L) # doctest:+ELLIPSIS
+    Failure(ZeroDivisionError(...))
     >>> Try(add, 1L, 2L)
     Success(3L)
     """
