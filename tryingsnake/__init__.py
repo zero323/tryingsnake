@@ -258,9 +258,9 @@ def Try(f, *args, **kwargs):
     :return: Either success or Failure
 
     >>> from operator import add, truediv
-    >>> Try(truediv, 1L, 0L) # doctest:+ELLIPSIS
+    >>> Try(truediv, 1, 0) # doctest:+ELLIPSIS
     Failure(ZeroDivisionError(...))
-    >>> Try(add, 1L, 2L)
+    >>> Try(add, 1, 2)
     Success(3L)
     """
     try:
