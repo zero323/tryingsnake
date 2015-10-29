@@ -13,7 +13,7 @@ class TryTestCase(unittest.TestCase):
         self.assertTrue(Try(truediv, 1, -1).isSuccess)
 
     def failure_should_raise_an_exception_if_created_from_non_exception(self):
-        self.assertRaises(TypeError, Failure, 1)
+        self.assertRaises(TypeError, lambda: Failure(1))
 
     def test_get_should_raise_an_exception_if_failure(self):
         self.assertRaises(ZeroDivisionError, Try(truediv, 1, 0).get)
