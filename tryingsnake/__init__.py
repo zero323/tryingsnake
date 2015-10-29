@@ -38,6 +38,14 @@ class _Try(object):
 
         :param f: function to be applied.
         :return: self if this is a Failure otherwise f applied to self.get
+
+        >>> from operator import add, truediv
+        >>> Success(1).flatMap(lambda x: Try(add, x, 1))
+        Success(2)
+        >>> Failure(Exception("e")).flatMap(lambda x: Try(add, x, 1))
+        Failure(Exception('e',))
+        >>> Success(1).flatMap(lambda x: Try(truediv, x, 0))
+        Failure(ZeroDivisionError('division by zero',))
         """
         raise NotImplementedError
 
@@ -46,6 +54,15 @@ class _Try(object):
 
         :param f: function to be applied
         :return: self if this is a Failure otherwise Try(f, self.get)
+
+        >>> inc = lambda x: x + 1
+        >>> def f(e): raise Exception("e")
+        >>> Success(1).map(inc)
+        Success(2)
+        >>> Failure(Exception("e")).map(inc)
+        Failure(Exception('e',))
+        >>> Success("1").map(f)
+        Failure(Exception('e',))
         """
         return NotImplementedError
 
@@ -56,16 +73,76 @@ class _Try(object):
         :param exception_cls: optional exception class to return
         :param msg: optional message
         :return: self if f evaluates to True otherwise Failure
+
+        >>> Success(1).filter(lambda x: x > 0)
+        Success(1)
+        >>> Success(1).filter(lambda x: x < 0, msg="Greater than zero")
+        Failure(Exception('Greater than zero',))
+        >>> Failure(Exception("e")).filter(lambda x: x)
+        Failure(Exception('e',))
         """
         raise NotImplementedError
 
     def recover(self, f):
+        """If this is a Failure apply f to value otherwise
+
+        :param f: function to be applied
+        :return: Either Success of Failure
+
+        >>> def f(e): raise Exception("e")
+        >>> Success(1).recover(lambda e: 0)
+        Success(1)
+        >>> Failure(Exception("e")).recover(lambda e: 0)
+        Success(0)
+        >>> Failure(Exception("e")).recover(f)
+        Failure(Exception('e',))
+        """
         raise NotImplementedError
 
     def recoverWith(self, f):
+        """If this is a Failure apply f to self otherwise
+        return this
+
+        :param f: function to be applied
+        :return: Either Success of Failure
+
+        >>> Success(1).recoverWith(lambda t: Try(lambda: 0))
+        Success(1)
+        >>> Failure(Exception("e")).recoverWith(lambda t: Try(lambda: 0))
+        Success(0)
+        """
         raise NotImplementedError
 
     def failed(self):
+        """If this is a failure complete wrapped exception
+        otherwise throw TypeError
+
+        :return: None
+
+        >>> Success(1).failed()
+        Traceback (most recent call last):
+            ...
+        TypeError: Cannot fail Success
+        >>> Failure(Exception("e")).failed()
+        Traceback (most recent call last):
+            ...
+        Exception: e
+        """
+        raise NotImplementedError
+
+    def get(self):
+        """If this is Success get wrapped value otherwise
+        throw stored exception
+
+        :return: stored value
+
+        >>> Success(1).get()
+        1
+        >>> Failure(Exception("e")).get()
+        Traceback (most recent call last):
+            ...
+        Exception: e
+        """
         raise NotImplementedError
 
     def __repr__(self):
@@ -152,9 +229,9 @@ def Try(f, *args, **kwargs):
     :param kwargs: kwargs which should be passed to f
     :return: Either success or Failure
 
-    >>> from operator import add, div
-    >>> Try(div, 1L, 0L)
-    Failure(ZeroDivisionError('long division or modulo by zero',))
+    >>> from operator import add, truediv
+    >>> Try(truediv, 1L, 0L)
+    Failure(ZeroDivisionError('division by zero',))
     >>> Try(add, 1L, 2L)
     Success(3L)
     """

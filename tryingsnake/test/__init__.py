@@ -1,6 +1,6 @@
 import unittest
 from operator import add, truediv
-from tryingsnake import *
+from tryingsnake import _Try, Try, Success, Failure
 
 
 class TryTestCase(unittest.TestCase):
@@ -94,6 +94,26 @@ class TryTestCase(unittest.TestCase):
 
     def test_or_else_on_failure_should_throw_an_exception_default_is_not_try(self):
         self.assertRaises(TypeError, Failure(Exception("e")).orElse, 1)
+
+    def test_failed_on_failure_should_throw_stored_exception(self):
+        self.assertRaises(Exception, Failure(Exception("e")).failed)
+
+    def test_failed_on_success_should_throw_type_error_exception(self):
+        self.assertRaises(TypeError, Success(1).failed)
+
+    def test_not_implemented_should_throw_not_implemented_exception(self):
+        _try = _Try()
+        identity = lambda x: x
+        self.assertRaises(NotImplementedError, _try.map, identity)
+        self.assertRaises(NotImplementedError, _try.flatMap, identity)
+        self.assertRaises(NotImplementedError, _try.get, identity)
+        self.assertRaises(NotImplementedError, _try.filter, identity)
+        self.assertRaises(NotImplementedError, _try.map, identity)
+        self.assertRaises(NotImplementedError, _try.map, identity)
+        self.assertRaises(NotImplementedError, _try.recover, identity)
+        self.assertRaises(NotImplementedError, _try.recoverWith(), identity)
+        self.assertRaises(NotImplementedError, _try.getOrElse, None)
+        self.assertRaises(NotImplementedError, _try.getOr, Success(1))
 
 
 if __name__ == '__main__':
