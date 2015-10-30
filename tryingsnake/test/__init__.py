@@ -13,7 +13,7 @@ class TryTestCase(unittest.TestCase):
         self.assertTrue(Try(truediv, 1, -1).isSuccess)
 
     def test_failure_should_raise_an_exception_if_created_from_non_exception(self):
-        self.assertRaises(TypeError,)
+        self.assertRaises(TypeError, Failure, 1)
 
     def test_get_should_raise_an_exception_if_failure(self):
         self.assertRaises(ZeroDivisionError, Try(truediv, 1, 0).get)
@@ -111,7 +111,7 @@ class TryTestCase(unittest.TestCase):
     def test__try_identity_if_try_or_raise(self):
         success = Success(1)
         failure = Failure(Exception("e"))
-        self.assertRaises(TypeError, _Try._identity_if_try_or_raise, None)
+        self.assertRaises(TypeError, _Try._identity_if_try_or_raise, 1)
         self.assertEqual(_Try._identity_if_try_or_raise(success), success)
         self.assertEqual(_Try._identity_if_try_or_raise(failure), failure)
 
