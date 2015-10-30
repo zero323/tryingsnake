@@ -18,6 +18,11 @@ __pycache__/
 *.un~
 *~
 
+# Distribution 
+
+dist/
+MANIFEST
+
 # Coverage
 
 .coverage
