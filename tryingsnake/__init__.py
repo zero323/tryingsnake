@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, division, absolute_import
-import inspect as _inspect
 
 
 class _Try(object):
@@ -179,7 +178,7 @@ class _Try(object):
 
 class Failure(_Try):
     def __init__(self, e):
-        if Exception not in _inspect.getmro(e.__class__):
+        if not isinstance(e, Exception):
             msg = "Invalid type for Failure: {0}"
             raise TypeError(msg.format(type(e)))
 
