@@ -3,6 +3,7 @@ TryingSnake
 
 [![Build Status](https://travis-ci.org/zero323/tryingsnake.svg?branch=master)](https://travis-ci.org/zero323/tryingsnake)
 [![Coverage Status](https://coveralls.io/repos/zero323/tryingsnake/badge.svg?branch=master&service=github)](https://coveralls.io/github/zero323/tryingsnake?branch=master)
+[![PyPI version](https://badge.fury.io/py/tryingsnake.svg)](https://badge.fury.io/py/tryingsnake)
 
 A simple, `Try` implementation inspired by [`scala.util.Try`](http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.util.Try)
 
