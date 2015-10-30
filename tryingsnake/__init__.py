@@ -10,6 +10,12 @@ class _Try(object):
             raise TypeError(msg.format(type(v)))
         return v
 
+    @staticmethod
+    def _raise_if_not_exception(e, msg="Invalid type for Failure: {0}"):
+        if not isinstance(e, Exception):
+            raise TypeError(msg.format(type(e)))
+        return True
+
     @property
     def isFailure(self):
         """Check if this is a Failure.
@@ -45,7 +51,7 @@ class _Try(object):
             ...
         Exception: e
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def getOrElse(self, default):
         """If this is a Success get stored value otherwise
@@ -59,7 +65,7 @@ class _Try(object):
         >>> Failure(Exception("e")).getOrElse(0)
         0
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def orElse(self, default):
         """If this is a Success return self otherwise
@@ -73,7 +79,7 @@ class _Try(object):
         >>> Failure(Exception("e")).orElse(Success(0))
         Success(0)
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def map(self, f):
         """Apply function to the value.
@@ -90,7 +96,7 @@ class _Try(object):
         >>> Success("1").map(f)
         Failure(Exception('e',))
         """
-        raise NotImplementedError
+        raise NotImplementedError   # pragma: no cover
 
     def flatMap(self, f):
         """ Apply potentially function  returning _Try to the value.
@@ -106,7 +112,7 @@ class _Try(object):
         >>> Success(1).flatMap(lambda x: Try(add, x, "0")) # doctest:+ELLIPSIS
         Failure(TypeError(...))
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def filter(self, f, exception_cls=Exception, msg=None):
         """Convert this to Failure if f(self.get()) evaluates to False
@@ -123,7 +129,7 @@ class _Try(object):
         >>> Failure(Exception("e")).filter(lambda x: x)
         Failure(Exception('e',))
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def recover(self, f):
         """If this is a Failure apply f to value otherwise
@@ -139,7 +145,7 @@ class _Try(object):
         >>> Failure(Exception("e")).recover(f)
         Failure(Exception('e',))
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def recoverWith(self, f):
         """If this is a Failure apply f to self otherwise
@@ -153,7 +159,7 @@ class _Try(object):
         >>> Failure(Exception("e")).recoverWith(lambda t: Try(lambda: 0))
         Success(0)
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def failed(self):
         """If this is a failure complete wrapped exception
@@ -170,7 +176,7 @@ class _Try(object):
             ...
         Exception: e
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def __repr__(self):
         return self._fmt.format(repr(self._v))
@@ -178,10 +184,7 @@ class _Try(object):
 
 class Failure(_Try):
     def __init__(self, e):
-        if not isinstance(e, Exception):
-            msg = "Invalid type for Failure: {0}"
-            raise TypeError(msg.format(type(e)))
-
+        _Try._raise_if_not_exception(e)
         self._v = e
         self._isSuccess = False
         self._fmt = "Failure({0})"

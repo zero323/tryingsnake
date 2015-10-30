@@ -12,8 +12,8 @@ class TryTestCase(unittest.TestCase):
         self.assertFalse(Try(add, 1, -1).isFailure)
         self.assertTrue(Try(truediv, 1, -1).isSuccess)
 
-    def failure_should_raise_an_exception_if_created_from_non_exception(self):
-        self.assertRaises(TypeError, lambda: Failure(1))
+    def test_failure_should_raise_an_exception_if_created_from_non_exception(self):
+        self.assertRaises(TypeError,)
 
     def test_get_should_raise_an_exception_if_failure(self):
         self.assertRaises(ZeroDivisionError, Try(truediv, 1, 0).get)
@@ -104,20 +104,16 @@ class TryTestCase(unittest.TestCase):
     def test_failed_on_success_should_throw_type_error_exception(self):
         self.assertRaises(TypeError, Success(1).failed)
 
-    def test_not_implemented_should_throw_not_implemented_exception(self):
-        _try = _Try()
-        identity = lambda x: x
-        self.assertRaises(NotImplementedError, _try.map, identity)
-        self.assertRaises(NotImplementedError, _try.flatMap, identity)
-        self.assertRaises(NotImplementedError, _try.get)
-        self.assertRaises(NotImplementedError, _try.filter, identity)
-        self.assertRaises(NotImplementedError, _try.map, identity)
-        self.assertRaises(NotImplementedError, _try.map, identity)
-        self.assertRaises(NotImplementedError, _try.recover, identity)
-        self.assertRaises(NotImplementedError, _try.recoverWith, identity)
-        self.assertRaises(NotImplementedError, _try.getOrElse, None)
-        self.assertRaises(NotImplementedError, _try.orElse, Success(1))
-        self.assertRaises(NotImplementedError, _try.failed)
+    def test__try_raise_if_not_exception(self):
+        self.assertRaises(TypeError, _Try._raise_if_not_exception, 1)
+        self.assertTrue(_Try._raise_if_not_exception(Exception("e")))
+
+    def test__try_identity_if_try_or_raise(self):
+        success = Success(1)
+        failure = Failure(Exception("e"))
+        self.assertRaises(TypeError, _Try._identity_if_try_or_raise, None)
+        self.assertEqual(_Try._identity_if_try_or_raise(success), success)
+        self.assertEqual(_Try._identity_if_try_or_raise(failure), failure)
 
 
 if __name__ == '__main__':
