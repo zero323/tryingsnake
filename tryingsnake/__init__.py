@@ -3,10 +3,10 @@
 from __future__ import print_function, division, absolute_import
 
 
-class _Try(object):
+class Try_(object):
     @staticmethod
     def _identity_if_try_or_raise(v, msg="Invalid return type for f: {0}"):
-        if not isinstance(v, _Try):
+        if not isinstance(v, Try_):
             raise TypeError(msg.format(type(v)))
         return v
 
@@ -16,27 +16,11 @@ class _Try(object):
             raise TypeError(msg.format(type(e)))
         return True
 
-    @property
-    def isFailure(self):
-        """Check if this is a Failure.
+    def __init__(self, _):
+        raise NotImplementedError("Use Try function or Success/Failure instead.")  # pragma: no cover
 
-        >>> Success(1).isFailure
-        False
-        >>> Failure(Exception()).isFailure
-        True
-        """
-        return not self._isSuccess
-
-    @property
-    def isSuccess(self):
-        """Check if this is a Success.
-
-        >>> Success(1).isSuccess
-        True
-        >>> Failure(Exception()).isSuccess
-        False
-        """
-        return self._isSuccess
+    def __repr__(self):
+        return self._fmt.format(repr(self._v))
 
     def get(self):
         """If this is Success get wrapped value otherwise
@@ -71,7 +55,7 @@ class _Try(object):
         """If this is a Success return self otherwise
         default
 
-        :param default:
+        :param default: Try_
         :return:
 
         >>> Success(1).orElse(Success(0))
@@ -99,7 +83,7 @@ class _Try(object):
         raise NotImplementedError   # pragma: no cover
 
     def flatMap(self, f):
-        """ Apply potentially function  returning _Try to the value.
+        """ Apply function  returning Try_ to the value.
 
         :param f: function to be applied.
         :return: self if this is a Failure otherwise f applied to self.get
@@ -117,7 +101,7 @@ class _Try(object):
     def filter(self, f, exception_cls=Exception, msg=None):
         """Convert this to Failure if f(self.get()) evaluates to False
 
-        :param f:
+        :param f: function to be applied
         :param exception_cls: optional exception class to return
         :param msg: optional message
         :return: self if f evaluates to True otherwise Failure
@@ -178,46 +162,32 @@ class _Try(object):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def __repr__(self):
-        return self._fmt.format(repr(self._v))
+    @property
+    def isFailure(self):
+        """Check if this is a Failure.
+
+        >>> Success(1).isFailure
+        False
+        >>> Failure(Exception()).isFailure
+        True
+        """
+        return not self._isSuccess
+
+    @property
+    def isSuccess(self):
+        """Check if this is a Success.
+
+        >>> Success(1).isSuccess
+        True
+        >>> Failure(Exception()).isSuccess
+        False
+        """
+        return self._isSuccess
 
 
-class Failure(_Try):
-    def __init__(self, e):
-        _Try._raise_if_not_exception(e)
-        self._v = e
-        self._isSuccess = False
-        self._fmt = "Failure({0})"
+class Success(Try_):
+    """Represents a successful computation"""
 
-    def get(self): raise self._v
-
-    def getOrElse(self, default):
-        return default
-
-    def orElse(self, default):
-        return _Try._identity_if_try_or_raise(default)
-
-    def map(self, f):
-        return self
-
-    def flatMap(self, f):
-        return self
-
-    def filter(self, f, exception_cls=Exception, msg=None):
-        return self
-
-    def recover(self, f):
-        return Try(f, self._v)
-
-    def recoverWith(self, f):
-        v = Try(f, self._v)
-        return _Try._identity_if_try_or_raise(v if v.isFailure else v.get())
-
-    def failed(self):
-        return self.get()
-
-
-class Success(_Try):
     def __init__(self, v):
         self._v = v
         self._isSuccess = True
@@ -234,7 +204,7 @@ class Success(_Try):
 
     def flatMap(self, f):
         v = Try(f, self._v)
-        return _Try._identity_if_try_or_raise(v if v.isFailure else v.get())
+        return Try_._identity_if_try_or_raise(v if v.isFailure else v.get())
 
     def filter(self, f, exception_cls=Exception, msg=None):
         return (self if f(self.get())
@@ -248,6 +218,43 @@ class Success(_Try):
 
     def failed(self):
         raise TypeError("Cannot fail Success")
+
+
+class Failure(Try_):
+    """Represents a unsuccessful computation"""
+
+    def __init__(self, e):
+        Try_._raise_if_not_exception(e)
+        self._v = e
+        self._isSuccess = False
+        self._fmt = "Failure({0})"
+
+    def get(self): raise self._v
+
+    def getOrElse(self, default):
+        return default
+
+    def orElse(self, default):
+        return Try_._identity_if_try_or_raise(default)
+
+    def map(self, f):
+        return self
+
+    def flatMap(self, f):
+        return self
+
+    def filter(self, f, exception_cls=Exception, msg=None):
+        return self
+
+    def recover(self, f):
+        return Try(f, self._v)
+
+    def recoverWith(self, f):
+        v = Try(f, self._v)
+        return Try_._identity_if_try_or_raise(v if v.isFailure else v.get())
+
+    def failed(self):
+        return self.get()
 
 
 def Try(f, *args, **kwargs):

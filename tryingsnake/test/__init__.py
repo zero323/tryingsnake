@@ -1,6 +1,6 @@
 import unittest
 from operator import add, truediv
-from tryingsnake import _Try, Try, Success, Failure
+from tryingsnake import Try_, Try, Success, Failure
 
 
 class TryTestCase(unittest.TestCase):
@@ -105,15 +105,15 @@ class TryTestCase(unittest.TestCase):
         self.assertRaises(TypeError, Success(1).failed)
 
     def test__try_raise_if_not_exception(self):
-        self.assertRaises(TypeError, _Try._raise_if_not_exception, 1)
-        self.assertTrue(_Try._raise_if_not_exception(Exception("e")))
+        self.assertRaises(TypeError, Try_._raise_if_not_exception, 1)
+        self.assertTrue(Try_._raise_if_not_exception(Exception("e")))
 
     def test__try_identity_if_try_or_raise(self):
         success = Success(1)
         failure = Failure(Exception("e"))
-        self.assertRaises(TypeError, _Try._identity_if_try_or_raise, 1)
-        self.assertEqual(_Try._identity_if_try_or_raise(success), success)
-        self.assertEqual(_Try._identity_if_try_or_raise(failure), failure)
+        self.assertRaises(TypeError, Try_._identity_if_try_or_raise, 1)
+        self.assertEqual(Try_._identity_if_try_or_raise(success), success)
+        self.assertEqual(Try_._identity_if_try_or_raise(failure), failure)
 
 
 if __name__ == '__main__':
