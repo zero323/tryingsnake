@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='tryingsnake',
-    version='0.1.0',
+    version='0.2.0',
     packages=['tryingsnake'],
     url='https://github.com/zero323/tryingsnake',
     license='MIT',
