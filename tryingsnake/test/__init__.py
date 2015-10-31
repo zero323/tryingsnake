@@ -126,5 +126,12 @@ class TryTestCase(unittest.TestCase):
         self.assertNotEqual(Failure(Exception("e")), Failure(TypeError("e")))
         self.assertNotEqual(Failure(Exception()), Success(1))
 
+    def test_set_unchecked_should_correctly_set_and_unset_unchecked_exceptions(self):
+        from operator import getitem
+        Try_.set_unhandled([IndexError])
+        self.assertRaises(IndexError, Try, getitem, [1], 3)
+        Try_.set_unhandled()
+        self.assertTrue(Try(getitem, [1], 3).isFailure)
+
 if __name__ == '__main__':
     unittest.main()  # pragma: no cover

@@ -2,6 +2,29 @@
 
 
 class Try_(object):
+    _unhandled = tuple()
+
+    @staticmethod
+    def set_unhandled(es=None):
+        """Set a list of the unhandled exceptions.
+
+        :param es: an iterable of exceptions or None
+
+        >>> from operator import getitem
+        >>> class FooException(Exception): pass
+        >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
+        Failure(IndexError('list index out of range',))
+        >>> Try_.set_unhandled([IndexError])
+        >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
+        Traceback (most recent call last):
+            ...
+        IndexError: ...
+        >>> Try_.set_unhandled()
+        >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
+        Failure(IndexError('list index out of range',))
+        """
+        Try_._unhandled = tuple(es) if es is not None else tuple()
+
     @staticmethod
     def _identity_if_try_or_raise(v, msg="Invalid return type for f: {0}"):
         if not isinstance(v, Try_):
@@ -310,4 +333,6 @@ def Try(f, *args, **kwargs):
     try:
         return Success(f(*args, **kwargs))
     except Exception as e:
+        if isinstance(e, Try_._unhandled):
+            raise e
         return Failure(e)
