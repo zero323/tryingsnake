@@ -5,7 +5,7 @@ TryingSnake
 [![Coverage Status](https://coveralls.io/repos/zero323/tryingsnake/badge.svg?branch=master&service=github)](https://coveralls.io/github/zero323/tryingsnake?branch=master)
 [![PyPI version](https://badge.fury.io/py/tryingsnake.svg)](https://badge.fury.io/py/tryingsnake)
 
-A simple, `Try` implementation inspired by [`scala.util.Try`](http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.util.Try)
+A simple, `Try` implementation inspired by [scala.util.Try](http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.util.Try)
 
 Examples
 --------
@@ -29,7 +29,7 @@ Examples
   ```python
   >>> def mean_1(xs):
   ...     try:
-            return sum(xs) / len(xs)
+  ...       return sum(xs) / len(xs)
   ...     except ZeroDivisionError as e:
   ...         return None
   >>> mean_1([])  # What does it mean?
