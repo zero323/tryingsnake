@@ -11,7 +11,6 @@ class Try_(object):
         :param es: an iterable of exceptions or None
 
         >>> from operator import getitem
-        >>> class FooException(Exception): pass
         >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
         Failure(IndexError('list index out of range',))
         >>> Try_.set_unhandled([IndexError])
