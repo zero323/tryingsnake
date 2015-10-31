@@ -19,7 +19,7 @@ Examples
        >>> Try(succeed)
        Success(1)
 
-       >>> def fail(): return 1/ 0
+       >>> def fail(): return 1 / 0
        >>> Try(fail)
        Failure(ZeroDivisionError('integer division or modulo by zero',))
 
@@ -83,7 +83,24 @@ Examples
            ...
        IndexError: ...
 
-INSTALLATION
+- Make things (relatively) simple
+
+   .. code:: python
+
+       >>> import math
+       >>> from collections import Counter
+       >>> xs = [1.0, 0.0, "-1", -3, 2, 1 + 2j]
+       >>> sqrts = [Try(math.sqrt, x) for x in xs]
+       >>> [x.get() for x in sqrts if x.isSuccess]
+       [1.0, 0.0, 1.4142135623730951]
+       >>> def get_etype(x):
+       ...     return x.recoverWith(lambda x: Try(type, x)).get()
+       >>> Counter(get_etype(x) for x in sqrts if x.isFailure)
+       Counter({ValueError: 1, TypeError: 2})
+
+
+
+Installation
 ------------
 
 ::
@@ -96,7 +113,7 @@ or
 
     easy_install tryingsnake
 
-LICENSE
+License
 -------
 
 MIT, See
