@@ -1,8 +1,12 @@
+#!/usr/bin/env python
+
+from os.path import exists
 from distutils.core import setup
+import tryingsnake
 
 setup(
     name='tryingsnake',
-    version='0.2.1',
+    version=tryingsnake.__version__,
     packages=['tryingsnake'],
     url='https://github.com/zero323/tryingsnake',
     license='MIT',
