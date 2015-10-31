@@ -1,5 +1,5 @@
 TryingSnake
------------
+===========
 
 |Build Status| |Coverage Status| |PyPI version|
 
@@ -7,7 +7,7 @@ A simple, ``Try`` implementation inspired by
 `scala.util.Try <http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.util.Try>`__
 
 Examples
---------
+========
 
 -  Wrap functions with arguments:
 
@@ -83,7 +83,7 @@ Examples
            ...
        IndexError: ...
 
-- Make things (relatively) simple
+-  Make things (relatively) simple
 
    .. code:: python
 
@@ -98,10 +98,8 @@ Examples
        >>> Counter(get_etype(x) for x in sqrts if x.isFailure)
        Counter({ValueError: 1, TypeError: 2})
 
-
-
 Installation
-------------
+============
 
 ::
 
@@ -114,17 +112,16 @@ or
     easy_install tryingsnake
 
 License
--------
+=======
 
 MIT, See
 `LICENSE <https://github.com/zero323/tryingsnake/blob/master/LICENSE>`__
 
 FAQ
----
+===
 
 -  Q: Is this project production-ready?
 -  A: No, and it probablly won't be.
-
 -  Q: Why to use mixedCase method names instead of lowercase recommended
    by PEP8?
 -  A: Mostly to make switching between Python and Scala code as painless
