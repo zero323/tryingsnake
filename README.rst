@@ -29,10 +29,11 @@ Examples
 
        >>> def mean_1(xs):
        ...     try:
-       ...       return sum(xs) / len(xs)
+       ...         return sum(xs) / len(xs)
        ...     except ZeroDivisionError as e:
-       ...         return None
-       >>> mean_1([])  # What does it mean?
+       ...         return float("inf")
+       >>> mean_1([])
+       inf # What does it mean?
 
    vs.
 
