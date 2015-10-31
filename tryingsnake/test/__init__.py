@@ -124,6 +124,7 @@ class TryTestCase(unittest.TestCase):
         self.assertNotEqual(Failure(Exception("foo")), Failure(Exception("bar")))
         self.assertNotEqual(Failure(ZeroDivisionError()), Failure(TypeError()))
         self.assertNotEqual(Failure(Exception("e")), Failure(TypeError("e")))
+        self.assertNotEqual(Failure(Exception()), Success(1))
 
 if __name__ == '__main__':
     unittest.main()  # pragma: no cover
