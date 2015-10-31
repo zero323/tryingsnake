@@ -70,7 +70,7 @@ Examples
        >>> Try(get, mirrors[0]).recover(lambda _: get(mirrors[1]))
        Success('http://example.com')
 
--  Let them fail
+-  Let them fail:
 
    .. code:: python
 
