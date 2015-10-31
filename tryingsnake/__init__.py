@@ -17,6 +17,9 @@ class Try_(object):
     def __init__(self, _):
         raise NotImplementedError("Use Try function or Success/Failure instead.")  # pragma: no cover
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __repr__(self):
         return self._fmt.format(repr(self._v))
 
@@ -191,6 +194,11 @@ class Success(Try_):
         self._isSuccess = True
         self._fmt = "Success({0})"
 
+    def __eq__(self, other):
+        if isinstance(other, Success):
+            return self._v == other._v
+        return False
+
     def get(self): return self._v
 
     def getOrElse(self, default): return self.get()
@@ -226,6 +234,15 @@ class Failure(Try_):
         self._v = e
         self._isSuccess = False
         self._fmt = "Failure({0})"
+
+    def __eq__(self, other):
+        if isinstance(other, Failure):
+            this_type = type(self._v)
+            other_type = type(other._v)
+
+            return (this_type == other_type and  # match exact type
+                    self._v.args == other._v.args)
+        return False
 
     def get(self): raise self._v
 

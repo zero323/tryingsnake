@@ -115,6 +115,15 @@ class TryTestCase(unittest.TestCase):
         self.assertEqual(Try_._identity_if_try_or_raise(success), success)
         self.assertEqual(Try_._identity_if_try_or_raise(failure), failure)
 
+    def test_equality_of_success_should_be_based_on_the_equality_of_values(self):
+        self.assertEqual(Success(1), Success(1))
+        self.assertNotEqual(Success(1), Success(2))
+
+    def test_equality_of_failure_should_be_based_on_a_type_and_args(self):
+        self.assertEqual(Failure(Exception("e")), Failure(Exception("e")))
+        self.assertNotEqual(Failure(Exception("foo")), Failure(Exception("bar")))
+        self.assertNotEqual(Failure(ZeroDivisionError()), Failure(TypeError()))
+        self.assertNotEqual(Failure(Exception("e")), Failure(TypeError("e")))
 
 if __name__ == '__main__':
     unittest.main()  # pragma: no cover
