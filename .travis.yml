@@ -9,14 +9,11 @@ python:
   - "pypy"
   - "pypy3"
 
-env:
-  - NOSE_DOCTEST_EXTENSION=rst
-
 install:
   - pip install coverage
 
 script:
-  - coverage run --source tryingsnake $(which nosetests) --with-doctest
+  - coverage run --source tryingsnake $(which nosetests) --with-doctest --doctest-extension rst
   - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then coverage report --show-missing ; fi
 
 after_success:
