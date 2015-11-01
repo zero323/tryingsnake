@@ -22,8 +22,8 @@ Examples
 
        >>> def fail():
        ...     return 1 / 0
-       >>> Try(fail)
-       Failure(ZeroDivisionError('integer division or modulo by zero',))
+       >>> Try(fail)  # doctest:+ELLIPSIS
+       Failure(ZeroDivisionError(...))
 
 -  Avoid sentinel values:
 
@@ -43,10 +43,10 @@ Examples
 
        >>> def mean_2(xs):
        ...     return sum(xs) / len(xs)
-       >>> Try(mean_2, [])
-       Failure(ZeroDivisionError('integer division or modulo by zero',))
-       >>> Try(mean_2, ["foo", "bar"])
-       Failure(TypeError("unsupported operand type(s) for +: 'int' and 'str'",))
+       >>> Try(mean_2, [])  # doctest:+ELLIPSIS
+       Failure(ZeroDivisionError(...))
+       >>> Try(mean_2, ["foo", "bar"])  # doctest:+ELLIPSIS
+       Failure(TypeError(...))
 
 -  Follow the happy path:
 
@@ -61,15 +61,17 @@ Examples
        >>> Failure(Exception("e")).map(inc).map(inv)
        Failure(Exception('e',))
 
-       >>> Success(-1).map(inc).map(inv)
-       Failure(ZeroDivisionError('float division by zero',))
+       >>> Success(-1).map(inc).map(inv)  # doctest:+ELLIPSIS
+       Failure(ZeroDivisionError(...))
 
 -  Recover:
 
    .. code:: python
 
-       >>> import urllib
-       >>> def get(url): return urllib.urlopen(url).url
+       >>> def get(url):
+       ...     if "mirror" in url:
+       ...         raise IOError("No address associated with hostname")
+       ...     return url
        >>> mirrors = ["http://mirror1.example.com", "http://example.com"]
        >>> Try(get, mirrors[0]).recover(lambda _: get(mirrors[1]))
        Success('http://example.com')
@@ -92,15 +94,14 @@ Examples
    .. code:: python
 
        >>> import math
-       >>> from collections import Counter
        >>> xs = [1.0, 0.0, "-1", -3, 2, 1 + 2j]
        >>> sqrts = [Try(math.sqrt, x) for x in xs]
        >>> [x.get() for x in sqrts if x.isSuccess]
        [1.0, 0.0, 1.4142135623730951]
-       >>> def get_etype(x):
-       ...     return str(x.recoverWith(lambda e: Try(type, e)).get())
-       >>> Counter(get_etype(x) for x in sqrts if x.isFailure)
-       Counter({"<type 'exceptions.TypeError'>": 2, "<type 'exceptions.ValueError'>": 1})
+       >>> def get_etype(e):
+       ...     return Try(lambda x: type(x).__name__, e)
+       >>> [x.recoverWith(get_etype).get() for x in sqrts if x.isFailure]
+       ['TypeError', 'ValueError', 'TypeError']
 
 Installation
 ============
