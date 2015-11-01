@@ -333,7 +333,7 @@ def Try(f, *args, **kwargs):
     """
     try:
         return Success(f(*args, **kwargs))
+    except Try_._unhandled as e:
+        raise e
     except Exception as e:
-        if isinstance(e, Try_._unhandled):
-            raise e
         return Failure(e)
