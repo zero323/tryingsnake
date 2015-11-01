@@ -24,7 +24,8 @@ class TryTestCase(unittest.TestCase):
         self.assertEqual(Try(add, "1", "2").get(), "12")
 
     def test_repr(self):
-        def fail(): raise Exception("failure")
+        def fail():
+            raise Exception("failure")
         self.assertEqual(repr(Try(add, 1, 0)), "Success(1)")
         self.assertEqual(repr(Try(fail)), "Failure(Exception('failure',))")
 
@@ -55,7 +56,8 @@ class TryTestCase(unittest.TestCase):
         self.assertTrue(Success(-1).filter(lambda x: x > 0).isFailure)
 
     def test_filter_should_accept_custom_exception_and_message(self):
-        class DummyException(Exception): pass
+        class DummyException(Exception):
+            pass
         failure = Success(1).filter(lambda x: False, DummyException, "dummy")
         self.assertRaises(DummyException, failure.get)
         self.assertEqual(repr(failure), "Failure(DummyException('dummy',))")
