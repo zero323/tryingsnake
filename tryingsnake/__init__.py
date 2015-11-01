@@ -233,9 +233,8 @@ class Success(Try_):
         >>> Success(1) == 1
         False
         """
-        if isinstance(other, Success):
-            return self._v == other._v
-        return False
+        return (isinstance(other, Success) and
+                self._v == other._v)
 
     def get(self):
         return self._v
@@ -279,13 +278,12 @@ class Failure(Try_):
         >>> Failure(Exception("e")) == Exception("e")
         False
         """
-        if isinstance(other, Failure):
-            this_type = type(self._v)
-            other_type = type(other._v)
-
-            return (this_type == other_type and  # match exact type
-                    self._v.args == other._v.args)
-        return False
+        return (
+            isinstance(other, Failure) and
+            # Want to check an exact type so isinstance or issubclass
+            # are not good here
+            type(self._v) is type(other._v) and
+            self._v.args == other._v.args)
 
     def get(self):
         raise self._v
