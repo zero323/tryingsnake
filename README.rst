@@ -1,7 +1,7 @@
 TryingSnake
 ===========
 
-|Build Status| |Coverage Status| |PyPI version|
+|Build Status| |Coverage Status| |Codacy| |Code Climate| |PyPI version| |License MIT|
 
 A simple, ``Try`` implementation inspired by
 `scala.util.Try <http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.util.Try>`__
@@ -134,3 +134,9 @@ FAQ
    :target: https://coveralls.io/github/zero323/tryingsnake?branch=master
 .. |PyPI version| image:: https://badge.fury.io/py/tryingsnake.svg
    :target: https://badge.fury.io/py/tryingsnake
+.. |Code Climate| image:: https://img.shields.io/codeclimate/github/zero323/tryingsnake.svg
+   :target: https://codeclimate.com/github/zero323/tryingsnake
+.. |Codacy| image:: https://img.shields.io/codacy/abef208bba70444d9b5cf0d851ca6c6e.svg
+   :target: https://www.codacy.com/app/matthew-szymkiewicz/tryingsnake
+.. |License MIT| image:: https://img.shields.io/pypi/l/tryingsnake.svg
+   :target: https://github.com/zero323/tryingsnake/blob/master/LICENSE
