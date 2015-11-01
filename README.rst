@@ -14,15 +14,10 @@ Examples
    .. code:: python
 
        >>> from tryingsnake import Try, Try_, Success, Failure
-
-       >>> def succeed():
-       ...     return 1
-       >>> Try(succeed)
+       >>> from operator import div, add
+       >>> Try(add, 0, 1)
        Success(1)
-
-       >>> def fail():
-       ...     return 1 / 0
-       >>> Try(fail)  # doctest:+ELLIPSIS
+       >>> Try(div, 1, 0)  # doctest:+ELLIPSIS
        Failure(ZeroDivisionError(...))
 
 -  Avoid sentinel values:
