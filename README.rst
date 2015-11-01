@@ -33,9 +33,9 @@ Examples
        ...     try:
        ...         return sum(xs) / len(xs)
        ...     except ZeroDivisionError as e:
-       ...         return float("inf")
+       ...         return float("inf")  # What does it mean?
        >>> mean_1([])
-       inf  # What does it mean?
+       inf
 
    vs.
 
@@ -85,7 +85,7 @@ Examples
        >>> Try(getitem, [], 0)
        Traceback (most recent call last):
            ...
-       IndexError: ...
+       IndexError: list index out of range
 
 -  Make things (relatively) simple
 
@@ -98,9 +98,9 @@ Examples
        >>> [x.get() for x in sqrts if x.isSuccess]
        [1.0, 0.0, 1.4142135623730951]
        >>> def get_etype(x):
-       ...     return x.recoverWith(lambda x: Try(type, x)).get()
+       ...     return str(x.recoverWith(lambda e: Try(type, e)).get())
        >>> Counter(get_etype(x) for x in sqrts if x.isFailure)
-       Counter({ValueError: 1, TypeError: 2})
+       Counter({"<type 'exceptions.TypeError'>": 2, "<type 'exceptions.ValueError'>": 1})
 
 Installation
 ============
