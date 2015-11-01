@@ -109,7 +109,7 @@ class Try_(object):
         >>> Success("1").map(f)
         Failure(Exception('e',))
         """
-        raise NotImplementedError   # pragma: no cover
+        return Try(f, self._v)
 
     def flatMap(self, f):
         """ Apply function  returning Try_ to the value.
@@ -245,9 +245,6 @@ class Success(Try_):
     def orElse(self, default):
         return self
 
-    def map(self, f):
-        return Try(f, self._v)
-
     def filter(self, f, exception_cls=Exception, msg=None):
         return (self if f(self.get())
                 else Failure(exception_cls(msg if msg else repr(f))))
@@ -307,7 +304,7 @@ class Failure(Try_):
         return self
 
     def recover(self, f):
-        return Try(f, self._v)
+        return Try_.map(self, f)
 
     def recoverWith(self, f):
         return Try_.flatMap(self, f)
