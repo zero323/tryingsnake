@@ -5,12 +5,14 @@ from tryingsnake import Try_, Try, Success, Failure
 
 class TryTestCase(unittest.TestCase):
     def test_failure_should_be_failure(self):
-        self.assertTrue(Try(truediv, 1, 0).isFailure)
-        self.assertFalse(Try(truediv, 1, 0).isSuccess)
+        failure = Try(truediv, 1, 0)
+        self.assertTrue(failure.isFailure)
+        self.assertFalse(failure.isSuccess)
 
     def test_success_should_be_success(self):
-        self.assertFalse(Try(add, 1, -1).isFailure)
-        self.assertTrue(Try(truediv, 1, -1).isSuccess)
+        success = Try(add, "foo", "bar")
+        self.assertFalse(success.isFailure)
+        self.assertTrue(success.isSuccess)
 
     def test_failure_should_raise_an_exception_if_created_from_non_exception(self):
         self.assertRaises(TypeError, Failure, 1)
