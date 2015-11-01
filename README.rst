@@ -13,13 +13,15 @@ Examples
 
    .. code:: python
 
-       >>> from tryingsnake import Try, Success, Failure
+       >>> from tryingsnake import Try, Try_, Success, Failure
 
-       >>> def succeed(): return 1
+       >>> def succeed():
+       ...     return 1
        >>> Try(succeed)
        Success(1)
 
-       >>> def fail(): return 1 / 0
+       >>> def fail():
+       ...     return 1 / 0
        >>> Try(fail)
        Failure(ZeroDivisionError('integer division or modulo by zero',))
 
@@ -33,13 +35,14 @@ Examples
        ...     except ZeroDivisionError as e:
        ...         return float("inf")
        >>> mean_1([])
-       inf # What does it mean?
+       inf  # What does it mean?
 
    vs.
 
    .. code:: python
 
-       >>> def mean_2(xs): return sum(xs) / len(xs)
+       >>> def mean_2(xs):
+       ...     return sum(xs) / len(xs)
        >>> Try(mean_2, [])
        Failure(ZeroDivisionError('integer division or modulo by zero',))
        >>> Try(mean_2, ["foo", "bar"])
@@ -122,7 +125,7 @@ FAQ
 ===
 
 -  Q: Is this project production-ready?
--  A: No, and it probablly won't be.
+-  A: No, and it probably won't be.
 -  Q: Why to use mixedCase method names instead of lowercase recommended
    by PEP8?
 -  A: Mostly to make switching between Python and Scala code as painless
