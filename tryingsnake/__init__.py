@@ -2,6 +2,7 @@
 
 __version__ = '0.2.2'
 
+
 class Try_(object):
     _unhandled = tuple()
 
@@ -124,7 +125,8 @@ class Try_(object):
         >>> Success(1).flatMap(lambda x: Try(add, x, "0")) # doctest:+ELLIPSIS
         Failure(TypeError(...))
         """
-        raise NotImplementedError  # pragma: no cover
+        v = Try(f, self._v)
+        return Try_._identity_if_try_or_raise(v if v.isFailure else v.get())
 
     def filter(self, f, exception_cls=Exception, msg=None):
         """Convert this to Failure if f(self.get()) evaluates to False
@@ -234,18 +236,17 @@ class Success(Try_):
             return self._v == other._v
         return False
 
-    def get(self): return self._v
+    def get(self):
+        return self._v
 
-    def getOrElse(self, default): return self.get()
+    def getOrElse(self, default):
+        return self.get()
 
-    def orElse(self, defualt): return self
+    def orElse(self, default):
+        return self
 
     def map(self, f):
         return Try(f, self._v)
-
-    def flatMap(self, f):
-        v = Try(f, self._v)
-        return Try_._identity_if_try_or_raise(v if v.isFailure else v.get())
 
     def filter(self, f, exception_cls=Exception, msg=None):
         return (self if f(self.get())
@@ -287,7 +288,8 @@ class Failure(Try_):
                     self._v.args == other._v.args)
         return False
 
-    def get(self): raise self._v
+    def get(self):
+        raise self._v
 
     def getOrElse(self, default):
         return default
@@ -308,8 +310,7 @@ class Failure(Try_):
         return Try(f, self._v)
 
     def recoverWith(self, f):
-        v = Try(f, self._v)
-        return Try_._identity_if_try_or_raise(v if v.isFailure else v.get())
+        return Try_.flatMap(self, f)
 
     def failed(self):
         return self.get()
