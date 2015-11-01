@@ -218,10 +218,11 @@ class Try_(object):
 class Success(Try_):
     """Represents a successful computation"""
 
+    _isSuccess = True
+    _fmt = "Success({0})"
+
     def __init__(self, v):
         self._v = v
-        self._isSuccess = True
-        self._fmt = "Success({0})"
 
     def __eq__(self, other):
         """
@@ -262,11 +263,12 @@ class Success(Try_):
 class Failure(Try_):
     """Represents a unsuccessful computation"""
 
+    _isSuccess = False
+    _fmt = "Failure({0})"
+
     def __init__(self, e):
         Try_._raise_if_not_exception(e)
         self._v = e
-        self._isSuccess = False
-        self._fmt = "Failure({0})"
 
     def __eq__(self, other):
         """
