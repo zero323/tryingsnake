@@ -133,7 +133,7 @@ FAQ
    :target: https://coveralls.io/github/zero323/tryingsnake?branch=master
 .. |PyPI version| image:: https://badge.fury.io/py/tryingsnake.svg
    :target: https://badge.fury.io/py/tryingsnake
-.. |Code Climate| image:: https://img.shields.io/codeclimate/github/zero323/tryingsnake.svg
+.. |Code Climate| image:: https://codeclimate.com/github/zero323/tryingsnake/badges/gpa.svg
    :target: https://codeclimate.com/github/zero323/tryingsnake
 .. |Codacy| image:: https://img.shields.io/codacy/abef208bba70444d9b5cf0d851ca6c6e.svg
    :target: https://www.codacy.com/app/matthew-szymkiewicz/tryingsnake
