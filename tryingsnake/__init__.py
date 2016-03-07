@@ -201,7 +201,7 @@ class Try_(object):
         >>> Failure(Exception()).isFailure
         True
         """
-        return not self._isSuccess
+        return not bool(self)
 
     @property
     def isSuccess(self):
@@ -212,13 +212,12 @@ class Try_(object):
         >>> Failure(Exception()).isSuccess
         False
         """
-        return self._isSuccess
+        return bool(self)
 
 
 class Success(Try_):
     """Represents a successful computation"""
 
-    _isSuccess = True
     _fmt = "Success({0})"
 
     @staticmethod
@@ -266,7 +265,6 @@ class Success(Try_):
 class Failure(Try_):
     """Represents a unsuccessful computation"""
 
-    _isSuccess = False
     _fmt = "Failure({0})"
 
     @staticmethod
