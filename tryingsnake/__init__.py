@@ -221,6 +221,10 @@ class Success(Try_):
     _isSuccess = True
     _fmt = "Success({0})"
 
+    @staticmethod
+    def __len__():
+        return 1
+
     def __init__(self, v):
         self._v = v
 
@@ -264,6 +268,10 @@ class Failure(Try_):
 
     _isSuccess = False
     _fmt = "Failure({0})"
+
+    @staticmethod
+    def __len__():
+        return 0
 
     def __init__(self, e):
         Try_._raise_if_not_exception(e)

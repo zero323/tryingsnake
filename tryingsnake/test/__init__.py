@@ -137,5 +137,9 @@ class TryTestCase(unittest.TestCase):
         Try_.set_unhandled()
         self.assertTrue(Try(getitem, [1], 3).isFailure)
 
+    def test_truthness(self):
+        self.assertFalse(Failure(Exception("e")))
+        self.assertTrue(Success(1))
+
 if __name__ == '__main__':
     unittest.main()  # pragma: no cover
