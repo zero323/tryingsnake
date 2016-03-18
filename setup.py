@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from os.path import exists
-from distutils.core import setup
+from setuptools import setup
 import tryingsnake
 
 setup(
