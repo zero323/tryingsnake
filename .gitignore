@@ -19,9 +19,12 @@ __pycache__/
 *~
 
 # Distribution 
-
 dist/
 MANIFEST
+
+# Build
+build
+*.egg-info/
 
 # Coverage
 
