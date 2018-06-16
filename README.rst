@@ -111,6 +111,11 @@ or
 
     easy_install tryingsnake
 
+Dependencies
+=======
+
+`tryingsnake` supports Python 3.3 or later with a common codebase and requires no external dependencies.
+
 License
 =======
 
