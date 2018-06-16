@@ -16,7 +16,8 @@ setup(
     package_data={'tryingsnake': ['test/*.py']},
     long_description=(open('README.rst').read() if exists('README.rst')
                         else ''),
-    classifiers=['Development Status :: 3 - Alpha',
+    classifiers=['Programming Language :: Python :: 3', 
+                 'Development Status :: 3 - Alpha',
                  'License :: OSI Approved :: MIT License'],
     zip_safe=False
 )
