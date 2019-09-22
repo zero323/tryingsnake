@@ -1,11 +1,11 @@
 sudo: false
 language: python
 python:
-  - "3.3"
-  - "3.4"
-  - "3.5"
   - "3.6"
-  - "pypy3.5"
+  - "3.7"
+  - "3.8-dev"  # 3.8 development branch
+  - "nightly"  # nightly build
+  - "pypy3"
 
 install:
   - pip install coverage
@@ -16,4 +16,3 @@ script:
 
 after_success:
   - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then pip install coveralls --use-mirrors ; coveralls ; fi
-
