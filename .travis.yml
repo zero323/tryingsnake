@@ -9,6 +9,7 @@ python:
 
 install:
   - pip install coverage
+  - pip install .
 
 script:
   - coverage run --source tryingsnake $(which nosetests) --with-doctest --doctest-extension rst
