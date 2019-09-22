@@ -258,7 +258,7 @@ class Success(Try_):
         return self
 
     def failed(self):
-        raise TypeError("Cannot fail Success")
+        raise Failure(TypeError("Cannot fail Success"))
 
 
 class Failure(Try_):
@@ -315,7 +315,7 @@ class Failure(Try_):
         return Try_.flatMap(self, f)
 
     def failed(self):
-        return self.get()
+        return Success(self._v)
 
 
 def Try(f, *args, **kwargs):
