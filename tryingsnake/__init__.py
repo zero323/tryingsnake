@@ -175,19 +175,17 @@ class Try_(object):
         raise NotImplementedError  # pragma: no cover
 
     def failed(self):
-        """If this is a failure complete wrapped exception
-        otherwise throw TypeError
+        """Inverts this Try_.
 
-        :return: None
+        If it is a Failure it returns its exception wrapped with Success.
+        If it is a Success it returns Failure(TypeError())
 
-        >>> Success(1).failed()
-        Traceback (most recent call last):
-            ...
-        TypeError: Cannot fail Success
-        >>> Failure(Exception("e")).failed()
-        Traceback (most recent call last):
-            ...
-        Exception: e
+        :return: Try_[T]
+
+        >>> Success(1).failed()  # doctest:+ELLIPSIS
+        Failure(TypeError(...))
+        >>> Failure(Exception("e")).failed()  # doctest:+ELLIPSIS
+        Success(Exception(...))
         """
         raise NotImplementedError  # pragma: no cover
 
@@ -258,7 +256,7 @@ class Success(Try_):
         return self
 
     def failed(self):
-        raise TypeError("Cannot fail Success")
+        return Failure(TypeError())
 
 
 class Failure(Try_):
@@ -315,7 +313,7 @@ class Failure(Try_):
         return Try_.flatMap(self, f)
 
     def failed(self):
-        return self.get()
+        return Success(self._v)
 
 
 def Try(f, *args, **kwargs):
