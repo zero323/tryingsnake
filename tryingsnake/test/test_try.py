@@ -107,11 +107,13 @@ class TryTestCase(unittest.TestCase):
     def test_or_else_on_failure_should_throw_an_exception_default_is_not_try(self):
         self.assertRaises(TypeError, Failure(Exception("e")).orElse, 1)
 
-    def test_failed_on_failure_should_throw_stored_exception(self):
-        self.assertRaises(Exception, Failure(Exception("e")).failed)
+    def test_failed_on_failure_should_return_success_of_exception(self):
+        result = Failure(Exception("e")).failed()
+        self.assertTrue(result.isSuccess and isinstance(result.get(), Exception))
 
-    def test_failed_on_success_should_throw_type_error_exception(self):
-        self.assertRaises(TypeError, Success(1).failed)
+    def test_failed_on_success_should_be_a_failure(self):
+        result = Success(1).failed()
+        self.assertTrue(result.isFailure)
 
     def test__try_raise_if_not_exception(self):
         self.assertRaises(TypeError, Try_._raise_if_not_exception, 1)
