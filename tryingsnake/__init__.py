@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 __version__ = '0.2.6'
 
 
@@ -13,16 +12,16 @@ class Try_(object):
         :param es: an iterable of exceptions or None
 
         >>> from operator import getitem
-        >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
-        Failure(IndexError('list index out of range',))
+        >>> Try(getitem, [], 0)  # doctest:+ELLIPSIS
+        Failure(IndexError(...))
         >>> Try_.set_unhandled([IndexError])
-        >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
+        >>> Try(getitem, [], 0)  # doctest:+ELLIPSIS
         Traceback (most recent call last):
             ...
         IndexError: ...
         >>> Try_.set_unhandled()
-        >>> Try(getitem, [], 0) # doctest:+ELLIPSIS
-        Failure(IndexError('list index out of range',))
+        >>> Try(getitem, [], 0)  # doctest:+ELLIPSIS
+        Failure(IndexError(...))
         """
         Try_._unhandled = tuple(es) if es is not None else tuple()
 
@@ -104,10 +103,10 @@ class Try_(object):
         >>> def f(e): raise Exception("e")
         >>> Success(1).map(inc)
         Success(2)
-        >>> Failure(Exception("e")).map(inc)
-        Failure(Exception('e',))
-        >>> Success("1").map(f)
-        Failure(Exception('e',))
+        >>> Failure(Exception("e")).map(inc)  # doctest:+ELLIPSIS
+        Failure(...)
+        >>> Success("1").map(f)  # doctest:+ELLIPSIS
+        Failure(...)
         """
         return Try(f, self._v)
 
@@ -120,9 +119,9 @@ class Try_(object):
         >>> from operator import add
         >>> Success(1).flatMap(lambda x: Try(add, x, 1))
         Success(2)
-        >>> Failure(Exception("e")).flatMap(lambda x: Try(add, x, 1))
-        Failure(Exception('e',))
-        >>> Success(1).flatMap(lambda x: Try(add, x, "0")) # doctest:+ELLIPSIS
+        >>> Failure(Exception("e")).flatMap(lambda x: Try(add, x, 1))  # doctest:+ELLIPSIS
+        Failure(...)
+        >>> Success(1).flatMap(lambda x: Try(add, x, "0"))  # doctest:+ELLIPSIS
         Failure(TypeError(...))
         """
         v = Try(f, self._v)
@@ -138,10 +137,10 @@ class Try_(object):
 
         >>> Success(1).filter(lambda x: x > 0)
         Success(1)
-        >>> Success(1).filter(lambda x: x < 0, msg="Greater than zero")
-        Failure(Exception('Greater than zero',))
-        >>> Failure(Exception("e")).filter(lambda x: x)
-        Failure(Exception('e',))
+        >>> Success(1).filter(lambda x: x < 0, msg="Greater than zero")  # doctest:+ELLIPSIS
+        Failure(Exception(...))
+        >>> Failure(Exception("e")).filter(lambda x: x)  # doctest:+ELLIPSIS
+        Failure(Exception(...))
         """
         raise NotImplementedError  # pragma: no cover
 
@@ -156,8 +155,8 @@ class Try_(object):
         Success(1)
         >>> Failure(Exception("e")).recover(lambda e: 0)
         Success(0)
-        >>> Failure(Exception("e")).recover(f)
-        Failure(Exception('e',))
+        >>> Failure(Exception("e")).recover(f)  # doctest:+ELLIPSIS
+        Failure(Exception(...))
         """
         raise NotImplementedError  # pragma: no cover
 
@@ -329,7 +328,7 @@ def Try(f, *args, **kwargs):
     :return: Either success or Failure
 
     >>> from operator import add, truediv
-    >>> Try(truediv, 1, 0) # doctest:+ELLIPSIS
+    >>> Try(truediv, 1, 0)  # doctest:+ELLIPSIS
     Failure(ZeroDivisionError(...))
     >>> Try(add, 1, 2)
     Success(3)

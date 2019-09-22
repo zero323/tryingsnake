@@ -53,8 +53,8 @@ Examples
        >>> Success(1).map(inc).map(inv)
        Success(0.5)
 
-       >>> Failure(Exception("e")).map(inc).map(inv)
-       Failure(Exception('e',))
+       >>> Failure(Exception("e")).map(inc).map(inv)  # doctest:+ELLIPSIS
+       Failure(Exception(...))
 
        >>> Success(-1).map(inc).map(inv)  # doctest:+ELLIPSIS
        Failure(ZeroDivisionError(...))
@@ -76,8 +76,8 @@ Examples
    .. code:: python
 
        >>> from operator import getitem
-       >>> Try(getitem, [], 0)
-       Failure(IndexError('list index out of range',))
+       >>> Try(getitem, [], 0)  # doctest:+ELLIPSIS
+       Failure(IndexError(...))
        >>> Try_.set_unhandled([IndexError])
        >>> Try(getitem, [], 0)
        Traceback (most recent call last):

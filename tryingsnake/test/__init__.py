@@ -1,5 +1,5 @@
-import unittest
 from operator import add, truediv
+import unittest
 from tryingsnake import Try_, Try, Success, Failure
 
 
@@ -29,7 +29,9 @@ class TryTestCase(unittest.TestCase):
         def fail():
             raise Exception("failure")
         self.assertEqual(repr(Try(add, 1, 0)), "Success(1)")
-        self.assertEqual(repr(Try(fail)), "Failure(Exception('failure',))")
+        self.assertEqual(
+            repr(Try(fail)), "Failure({})".format(repr(Exception("failure")))
+        )
 
     def test_flatmap_on_failure_should_return_failure(self):
         self.assertTrue(Failure(Exception("")).flatMap(lambda x: Success(1)).isFailure)
@@ -62,7 +64,10 @@ class TryTestCase(unittest.TestCase):
             pass
         failure = Success(1).filter(lambda x: False, DummyException, "dummy")
         self.assertRaises(DummyException, failure.get)
-        self.assertEqual(repr(failure), "Failure(DummyException('dummy',))")
+        self.assertEqual(
+            repr(failure),
+            "Failure({})".format(repr(DummyException('dummy')))
+        )
 
     def test_recover_on_failure_should_return_value_depending_on_f(self):
         failure = Failure(Exception("e"))
