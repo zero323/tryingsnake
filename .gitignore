@@ -18,7 +18,7 @@ __pycache__/
 *.un~
 *~
 
-# Distribution 
+# Distribution
 dist/
 MANIFEST
 
@@ -32,3 +32,5 @@ build
 
 # Docs
 doc/build
+
+.mypy_cache
