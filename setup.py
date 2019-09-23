@@ -14,9 +14,10 @@ setup(
     author_email='matthew.szymkiewicz@gmail.com',
     description='Exception handling, the functional way.',
     package_data={'tryingsnake': ['test/*.py']},
-    long_description=(open('README.rst').read() if exists('README.rst')
+    long_description=(open('README.md').read() if exists('README.md')
                         else ''),
-    classifiers=['Programming Language :: Python :: 3', 
+    long_description_content_type="text/markdown",
+    classifiers=['Programming Language :: Python :: 3',
                  'Development Status :: 3 - Alpha',
                  'License :: OSI Approved :: MIT License'],
     zip_safe=False

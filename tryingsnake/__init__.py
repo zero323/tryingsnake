@@ -4,7 +4,7 @@ from typing import Any, Callable, Generic, Iterable, Tuple, Type, TypeVar
 T = TypeVar("T")
 U = TypeVar("U")
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 
 class Try_(Generic[T]):
