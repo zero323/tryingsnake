@@ -1,23 +1,20 @@
 sudo: false
 language: python
 python:
-- '3.6'
-- '3.7'
-- 3.8-dev
-- nightly
-- pypy3
-install:
-  - pip install coverage
-  - pip install .
+  - '3.6'
+  - '3.7'
+  - "3.8-dev"
+  - "nightly"
+  - "pypy3"
 
-script:
-- coverage run --source tryingsnake $(which nosetests) --with-doctest --doctest-extension
-  rst
-- if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then coverage report --show-missing ;
-  fi
+before_script:
+  - pip install pytest pytest-cov coveralls
+install:
+  - pip install .
+script: 
+  - pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake
 after_success:
-- if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then pip install coveralls --use-mirrors
-  ; coveralls ; fi
+  - coveralls
 deploy:
   provider: pypi
   user: __token__
