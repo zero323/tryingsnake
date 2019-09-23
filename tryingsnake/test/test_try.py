@@ -117,7 +117,7 @@ class TryTestCase(unittest.TestCase):
 
     def test__try_raise_if_not_exception(self):
         self.assertRaises(TypeError, Try_._raise_if_not_exception, 1)
-        self.assertTrue(Try_._raise_if_not_exception(Exception("e")))
+        self.assertIsNone(Try_._raise_if_not_exception(Exception("e")))
 
     def test__try_identity_if_try_or_raise(self):
         success = Success(1)

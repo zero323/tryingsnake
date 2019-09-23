@@ -45,10 +45,9 @@ class Try_(Generic[T]):
         return v
 
     @staticmethod
-    def _raise_if_not_exception(e: Any, msg: str = "Invalid type for Failure: {0}") -> bool:
+    def _raise_if_not_exception(e: Any, msg: str = "Invalid type for Failure: {0}") -> None:
         if not isinstance(e, Exception):
             raise TypeError(msg.format(type(e)))
-        return True
 
     def __init__(self, _):
         raise NotImplementedError("Use Try function or Success/Failure instead.")  # pragma: no cover
