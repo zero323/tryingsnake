@@ -1,19 +1,29 @@
 sudo: false
 language: python
 python:
-  - "3.6"
-  - "3.7"
-  - "3.8-dev"  # 3.8 development branch
-  - "nightly"  # nightly build
-  - "pypy3"
-
+- '3.6'
+- '3.7'
+- 3.8-dev
+- nightly
+- pypy3
 install:
   - pip install coverage
   - pip install .
 
 script:
-  - coverage run --source tryingsnake $(which nosetests) --with-doctest --doctest-extension rst
-  - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then coverage report --show-missing ; fi
-
+- coverage run --source tryingsnake $(which nosetests) --with-doctest --doctest-extension
+  rst
+- if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then coverage report --show-missing ;
+  fi
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then pip install coveralls --use-mirrors ; coveralls ; fi
+- if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then pip install coveralls --use-mirrors
+  ; coveralls ; fi
+deploy:
+  provider: pypi
+  user: __token__
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true
+    branch: master
+  password:
+    secure: wAnzq8Hf+35Yb/MhpNCy7PHT4CAqZQCIxfymb+V6OdMFaHYtG/cFWw2Kj51AlF6CKgDobfsrtiEpUok/V17qCeoOjSAHeVnbmqxKyu7pNsg3DhkSs5NHHKctwMsPdbsb9/9A1GOhvHPWXyCVL0fX+ZPb7u1ULYGYtz85QMEpm09alLdQlxqe/mb1gOHDRqLscWGnFtmm7j6d/PCjPQcLonfXZ3Kw6s16f2mCEx2saKBDSMzEUYAfVrow+70Ro8p0YhsfERTGB7JsqT1in7/RJLQCt7InT9Vr+BuHOCFBsL3e43OkQ7i0kvb4Amw5w0C3sNQMX0qauGFqRQ5b1j9gkGnJRhZJWdWGKBSH9wUDhNSPIiPgcGGlb2g2CxgH/Lq+Pa7CvxW2oLE9m5GpgXrTGJdzx1xzRpT7Af6t9DsYg/iLPRLF18UV/A9BO5S2zhUJxKGZnzPZpH1UzxsVJI2MCY6akCpFikEmo91N5O7+YSD1Tka5y8fd+DmMRLAdjA1CVyW8mjhVt0ieSWbrMRLi8wjvps6LFWjS8QWLXAX2lXnmrH3qGe/8/3W/nxezxCBUNqKsZsZfrBkPrkpOx2vWwkSe3i25/cxYSNw8cf64Twdk08+r0kBdJJ4wAymWcYOU7qubopilTfF0jpwAsUANIermBOFh2c8C256Qa9n6ByQ=
