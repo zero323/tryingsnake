@@ -21,7 +21,6 @@ after_success:
 deploy:
   provider: pypi
   user: __token__
-  distributions: "sdist bdist_wheel"
   on:
     tags: true
     branch: master
