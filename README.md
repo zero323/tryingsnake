@@ -20,7 +20,7 @@ Examples
 
 -   Wrap functions with arguments:
 
-    ``` {.sourceCode .python}
+    ```python
     >>> from tryingsnake import Try, Try_, Success, Failure
     >>> from operator import add, truediv
     >>> Try(add, 0, 1)
@@ -31,7 +31,7 @@ Examples
 
 -   Avoid sentinel values:
 
-    ``` {.sourceCode .python}
+    ```python
     >>> def mean_1(xs):
     ...     try:
     ...         return sum(xs) / len(xs)
@@ -43,7 +43,7 @@ Examples
 
     vs.
 
-    ``` {.sourceCode .python}
+    ```python
     >>> def mean_2(xs):
     ...     return sum(xs) / len(xs)
     >>> Try(mean_2, [])  # doctest:+ELLIPSIS
@@ -54,7 +54,7 @@ Examples
 
 -   Follow the happy path:
 
-    ``` {.sourceCode .python}
+    ```python
     >>> def inc(x): return x + 1
     >>> def inv(x): return 1. / x
 
@@ -70,7 +70,7 @@ Examples
 
 -   Recover:
 
-    ``` {.sourceCode .python}
+    ```python
     >>> def get(url):
     ...     if "mirror" in url:
     ...         raise IOError("No address associated with hostname")
@@ -82,7 +82,7 @@ Examples
 
 -   Let them fail:
 
-    ``` {.sourceCode .python}
+    ```python
     >>> from operator import getitem
     >>> Try(getitem, [], 0)  # doctest:+ELLIPSIS
     Failure(IndexError(...))
@@ -95,7 +95,7 @@ Examples
 
 -   Make things (relatively) simple
 
-    ``` {.sourceCode .python}
+    ```python
     >>> import math
     >>> xs = [1.0, 0.0, "-1", -3, 2, 1 + 2j]
     >>> sqrts = [Try(math.sqrt, x) for x in xs]
