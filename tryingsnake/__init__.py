@@ -248,7 +248,10 @@ class Success(Try_[T]):
                 self._v == other._v)
 
     def __hash__(self):
-        return hash(self._v)
+        try:
+            return hash(self._v)
+        except TypeError as e:
+            raise TypeError("Cannot hash try with unhashable value") from e
 
     def get(self) -> T:
         return self._v
@@ -312,7 +315,10 @@ class Failure(Try_[T]):
             self._v.args == other._v.args)
 
     def __hash__(self):
-        return hash(self._v)
+        try:
+            return hash(self._v)
+        except TypeError as e:
+            raise TypeError("Cannot hash try with unhashable value") from e
 
     def get(self):
         raise self._v

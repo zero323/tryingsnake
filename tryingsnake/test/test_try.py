@@ -1,5 +1,6 @@
 from operator import add, truediv
 import unittest
+import pytest
 from tryingsnake import Try_, Try, Success, Failure
 
 
@@ -153,6 +154,10 @@ class TryTestCase(unittest.TestCase):
         self.assertTrue(hash(Success(1)) == 1)
         e = Exception("e")
         self.assertTrue(hash(Failure(e)) == hash(Failure(e)))
+
+    def test_fail_with_unhashable_value(self):
+        with pytest.raises(TypeError):
+            hash(Success([1]))
 
 
 if __name__ == '__main__':
