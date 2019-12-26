@@ -148,5 +148,12 @@ class TryTestCase(unittest.TestCase):
         self.assertFalse(Failure(Exception("e")))
         self.assertTrue(Success(1))
 
+    def test_hashable(self):
+        self.assertTrue(hash(Success(1)) == hash(Success(1)))
+        self.assertTrue(hash(Success(1)) == 1)
+        e = Exception("e")
+        self.assertTrue(hash(Failure(e)) == hash(Failure(e)))
+
+
 if __name__ == '__main__':
     unittest.main()  # pragma: no cover

@@ -247,6 +247,9 @@ class Success(Try_[T]):
         return (isinstance(other, Success) and
                 self._v == other._v)
 
+    def __hash__(self):
+        return hash(self._v)
+
     def get(self) -> T:
         return self._v
 
@@ -307,6 +310,9 @@ class Failure(Try_[T]):
             # are not good here
             type(self._v) is type(other._v) and
             self._v.args == other._v.args)
+
+    def __hash__(self):
+        return hash(self._v)
 
     def get(self):
         raise self._v
