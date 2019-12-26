@@ -20,5 +20,6 @@ setup(
     classifiers=['Programming Language :: Python :: 3',
                  'Development Status :: 3 - Alpha',
                  'License :: OSI Approved :: MIT License'],
-    zip_safe=False
+    tests_require=['pytest'],
+    zip_safe=False,
 )
