@@ -13,7 +13,7 @@ version](https://badge.fury.io/py/tryingsnake.svg)](https://badge.fury.io/py/try
 MIT](https://img.shields.io/pypi/l/tryingsnake.svg)](https://github.com/zero323/tryingsnake/blob/master/LICENSE)
 
 A simple, `Try` implementation inspired by
-[scala.util.Try](http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.util.Try)
+[scala.util.Try](https://www.scala-lang.org/api/current/scala/util/Try.html)
 
 Examples
 ========
