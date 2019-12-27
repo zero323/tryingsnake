@@ -9,6 +9,7 @@ Status](https://coveralls.io/repos/zero323/tryingsnake/badge.svg?branch=master&s
 Climate](https://codeclimate.com/github/zero323/tryingsnake/badges/gpa.svg)](https://codeclimate.com/github/zero323/tryingsnake)
 [![PyPI
 version](https://badge.fury.io/py/tryingsnake.svg)](https://badge.fury.io/py/tryingsnake)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/tryingsnake.svg)](https://anaconda.org/conda-forge/tryingsnake)
 [![License
 MIT](https://img.shields.io/pypi/l/tryingsnake.svg)](https://github.com/zero323/tryingsnake/blob/master/LICENSE)
 
@@ -110,11 +111,14 @@ Examples
 Installation
 ============
 
+This package is available on PYPI:
+
     pip install tryingsnake
 
-or
+and conda-forge:
 
-    easy_install tryingsnake
+    conda install -c conda-forge tryingsnake
+
 
 Dependencies
 =======
