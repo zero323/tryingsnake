@@ -8,11 +8,12 @@ python:
   - "pypy3"
 
 before_script:
-  - pip install pytest pytest-cov coveralls
+  - pip install coveralls mypy pytest pytest-cov 
 install:
   - pip install .
 script: 
   - pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake
+  - mypy tryingsnake
 after_success:
   - coveralls
 deploy:
