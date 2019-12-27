@@ -1,18 +1,27 @@
 sudo: false
 language: python
-python:
-  - '3.6'
-  - '3.7'
-  - "3.8-dev"
-  - "nightly"
-  - "pypy3"
+
+matrix:
+  include:
+    - python: "3.6"
+      env: MYPY=true
+    - python: "3.7"
+      env: MYPY=true
+    - python: "3.8-dev"
+      env: MYPY=true
+    - python: "nightly"
+      env: MYPY=true
+    - python: "pypy3"
+      env: MYPY=false
 
 before_script:
-  - pip install pytest pytest-cov coveralls
+  - pip install coveralls pytest pytest-cov
+  - if [[ $MYPY = true ]]; then pip install mypy; fi;
 install:
   - pip install .
-script: 
+script:
   - pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake
+  - if [[ $MYPY = true ]]; then mypy tryingsnake; fi;
 after_success:
   - coveralls
 deploy:
