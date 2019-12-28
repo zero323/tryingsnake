@@ -15,6 +15,8 @@ def Try(f):
     >>> try_add(1, 2)
     Success(3)
     """
+
     def _(*args, **kwargs):
         return tryingsnake.Try(f, *args, **kwargs)
+
     return _

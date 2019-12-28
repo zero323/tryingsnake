@@ -29,6 +29,7 @@ class TryTestCase(unittest.TestCase):
     def test_repr(self):
         def fail():
             raise Exception("failure")
+
         self.assertEqual(repr(Try(add, 1, 0)), "Success(1)")
         self.assertEqual(
             repr(Try(fail)), "Failure({})".format(repr(Exception("failure")))
@@ -63,11 +64,11 @@ class TryTestCase(unittest.TestCase):
     def test_filter_should_accept_custom_exception_and_message(self):
         class DummyException(Exception):
             pass
+
         failure = Success(1).filter(lambda x: False, DummyException, "dummy")
         self.assertRaises(DummyException, failure.get)
         self.assertEqual(
-            repr(failure),
-            "Failure({})".format(repr(DummyException('dummy')))
+            repr(failure), "Failure({})".format(repr(DummyException("dummy")))
         )
 
     def test_recover_on_failure_should_return_value_depending_on_f(self):
@@ -140,6 +141,7 @@ class TryTestCase(unittest.TestCase):
 
     def test_set_unchecked_should_correctly_set_and_unset_unchecked_exceptions(self):
         from operator import getitem
+
         Try_.set_unhandled([IndexError])
         self.assertRaises(IndexError, Try, getitem, [1], 3)
         Try_.set_unhandled()
@@ -179,5 +181,5 @@ class TryTestCase(unittest.TestCase):
         self.assertTrue(Try(g, a=1).map(lambda x: x + 1).isFailure)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()  # pragma: no cover
