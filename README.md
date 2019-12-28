@@ -179,8 +179,77 @@ FAQ
 ===
 
 -   Q: Is this project production-ready?
--   A: No, and it probably won\'t be.
+-   A: Sure, for some definition of production-ready. It is a toy project.
+    It has decent test coverage, stable API, and in general seems to do
+    what is expected to do. But it is not widely used, and the API design
+    and overall idea are rather unpythonic.
 -   Q: Why to use mixedCase method names instead of lowercase
     recommended by PEP8?
 -   A: Mostly to make switching between Python and Scala code as
     painless as possible.
+-   Q: What is the runtime cost?    
+    A: As of [0088286](https://github.com/zero323/tryingsnake/commit/00882862d655cd3d77ea730449f498883ed584d5) (releases 0.3 and 0.4 suffered from
+    severe performance regression caused by using `typing.Generic` as a base of
+    try. See [#18](https://github.com/zero323/tryingsnake/issues/18) for details)
+    rough numbers for simple tasks look as follows:
+
+    ```
+    Python 3.7.5 (default, Oct 27 2019, 15:43:29)
+    Type 'copyright', 'credits' or 'license' for more information
+    IPython 7.11.0 -- An enhanced Interactive Python. Type '?' for help.
+    In [1]: def identity(x): return x
+    In [2]: from tryingsnake import Try
+    In [3]: %timeit for i in range(1_000_000): identity(i)
+    59.8 ms ± 683 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+
+    In [4]: %timeit for i in range(1_000_000): Try(identity, i)
+    408 ms ± 4.14 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+    ```
+
+    and execution time is dominated by the initializer:
+
+    ```
+    In [5]: import cProfile
+    In [6]: cProfile.run("for i in range(1_000_000): Try(identity, i)")
+             4000003 function calls in 0.961 seconds
+
+       Ordered by: standard name
+
+       ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      1000000    0.078    0.000    0.078    0.000 <ipython-input-1-abafd771428d>:1(identity)
+            1    0.263    0.263    0.961    0.961 <string>:1(<module>)
+      1000000    0.094    0.000    0.094    0.000 __init__.py:234(__init__)
+      1000000    0.480    0.000    0.698    0.000 __init__.py:352(Try)
+      1000000    0.046    0.000    0.046    0.000 {built-in method builtins.callable}
+            1    0.000    0.000    0.961    0.961 {built-in method builtins.exec}
+            1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+    ```
+
+    This is quite a lot for simple functions so you should probably avoid it in such cases, where raw performance is important. It is still possible to amortize the cost in such cases, for example using composition:
+
+    ```python
+    from toolz.functoolz import compose
+    from tryingsnake import Try
+
+    Try(compose(str.split, str.lower, str.strip), " Foo BAR FooBar ")
+    ```
+
+    Memory overhead (as measured by [memory-profiler](https://pypi.org/project/memory-profiler/)) looks as follows:
+
+    ```
+    Line #    Mem usage    Increment   Line Contents
+    ================================================
+     6     37.9 MiB     37.9 MiB   @profile
+     7                             def f():
+     8    155.5 MiB      0.8 MiB       [Try(identity, i) for i in range(1_000_000)]
+    ```
+
+    compared to:
+
+    ```
+    Line #    Mem usage    Increment   Line Contents
+    ================================================
+     6     37.9 MiB     37.9 MiB   @profile
+     7                             def f():
+     8     77.4 MiB      1.0 MiB       [identity(i) for i in range(1_000_000)]
+     ```
