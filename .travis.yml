@@ -4,25 +4,25 @@ language: python
 matrix:
   include:
     - python: "3.6"
-      env: MYPY=true
+      env: PYPY=false
     - python: "3.7"
-      env: MYPY=true
+      env: PYPY=false
     - python: "3.8-dev"
-      env: MYPY=true
+      env: PYPY=false
     - python: "nightly"
-      env: MYPY=true
+      env: PYPY=false
     - python: "pypy3"
-      env: MYPY=false
+      env: PYPY=true
 
 before_script:
-  - pip install black coveralls pytest pytest-cov
-  - if [[ $MYPY = true ]]; then pip install mypy; fi;
+  - pip install coveralls pytest pytest-cov
+  - if [[ $PYPY = false ]]; then pip install black mypy; fi;
 install:
   - pip install .
 script:
   - pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake
-  - if [[ $MYPY = true ]]; then mypy tryingsnake; fi;
-  - black --check tryingsnake
+  - if [[ $PYPY = false ]]; then mypy tryingsnake; fi;
+  - if [[ $PYPY = false ]]; then black --check tryingsnake; fi;
 after_success:
   - coveralls
 deploy:
