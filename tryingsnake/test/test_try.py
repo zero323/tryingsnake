@@ -161,6 +161,13 @@ class TryTestCase(unittest.TestCase):
         with pytest.raises(TypeError):
             hash(Success([1]))
 
+        class UnhashableException(Exception):
+            def __hash__(self):
+                raise TypeError()
+
+        with pytest.raises(TypeError):
+            hash(Failure(UnhashableException()))
+
     def test_generator_without_arguments(self):
         g = (lambda: (yield 1))()
         self.assertEqual(Try(g).map(lambda x: x + 1), Success(2))
