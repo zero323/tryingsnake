@@ -7,11 +7,11 @@ U = TypeVar("U")
 __version__ = '0.4.0'
 
 
-class Try_(Generic[T]):
-    _unhandled: Tuple[Exception, ...] = tuple()
+class Try_:
+    _unhandled = ()
 
     @staticmethod
-    def set_unhandled(es: Iterable[Exception] = None) -> None:
+    def set_unhandled(es = None):
         """Set a list of the unhandled exceptions.
 
         :param es: an iterable of exceptions or None
@@ -31,38 +31,38 @@ class Try_(Generic[T]):
         Try_._unhandled = tuple(es) if es is not None else tuple()
 
     @property
-    def _v(self) -> Any:
+    def _v(self):
         raise NotImplementedError  # pragma: no cover
 
     @property
-    def _fmt(self) -> str:
+    def _fmt(self):
         raise NotImplementedError  # pragma: no cover
 
     @staticmethod
-    def _identity_if_try_or_raise(v: Any, msg: str = "Invalid return type for f: {0}") -> "Try_":
+    def _identity_if_try_or_raise(v, msg = "Invalid return type for f: {0}"):
         if not isinstance(v, Try_):
             raise TypeError(msg.format(type(v)))
         return v
 
     @staticmethod
-    def _raise_if_not_exception(e: Any, msg: str = "Invalid type for Failure: {0}") -> None:
+    def _raise_if_not_exception(e, msg = "Invalid type for Failure: {0}"):
         if not isinstance(e, Exception):
             raise TypeError(msg.format(type(e)))
 
     def __init__(self, _):
         raise NotImplementedError("Use Try function or Success/Failure instead.")  # pragma: no cover
 
-    def __ne__(self, other: Any) -> bool:
+    def __ne__(self, other):
         """
         >>> Success(1) != Failure(Exception())
         True
         """
         return not self.__eq__(other)
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return self._fmt.format(repr(self._v))
 
-    def get(self) -> T:
+    def get(self):
         """If this is Success get wrapped value otherwise
         throw stored exception
 
@@ -105,7 +105,7 @@ class Try_(Generic[T]):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def map(self, f: Callable[[T], U]) -> "Try_[U]":
+    def map(self, f):
         """Apply function to the value.
 
         :param f: function to be applied
@@ -122,7 +122,7 @@ class Try_(Generic[T]):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def flatMap(self, f: Callable[[T], "Try_[U]"]) -> "Try_[U]":
+    def flatMap(self, f):
         """ Apply function  returning Try_ to the value.
 
         :param f: function to be applied.
@@ -138,7 +138,7 @@ class Try_(Generic[T]):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def filter(self, f: Callable[[T], bool], exception_cls: Type[Exception] = Exception, msg: str = None) -> "Try_[T]":
+    def filter(self, f, exception_cls = Exception, msg = None):
         """Convert this to Failure if f(self.get()) evaluates to False
 
         :param f: function to be applied
@@ -155,7 +155,7 @@ class Try_(Generic[T]):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def recover(self, f: Callable[[Exception], T]) -> "Try_[T]":
+    def recover(self, f):
         """If this is a Failure apply f to value otherwise
 
         :param f: function to be applied
@@ -171,7 +171,7 @@ class Try_(Generic[T]):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def recoverWith(self, f: Callable[[Exception], "Try_[T]"]) -> "Try_[T]":
+    def recoverWith(self, f):
         """If this is a Failure apply f to self otherwise
         return this
 
@@ -185,7 +185,7 @@ class Try_(Generic[T]):
         """
         raise NotImplementedError  # pragma: no cover
 
-    def failed(self) -> "Try_[T]":
+    def failed(self):
         """Inverts this Try_.
 
         If it is a Failure it returns its exception wrapped with Success.
@@ -201,7 +201,7 @@ class Try_(Generic[T]):
         raise NotImplementedError  # pragma: no cover
 
     @property
-    def isFailure(self) -> bool:
+    def isFailure(self):
         """Check if this is a Failure.
 
         >>> Success(1).isFailure
@@ -212,7 +212,7 @@ class Try_(Generic[T]):
         return not bool(self)
 
     @property
-    def isSuccess(self) -> bool:
+    def isSuccess(self):
         """Check if this is a Success.
 
         >>> Success(1).isSuccess
@@ -223,19 +223,19 @@ class Try_(Generic[T]):
         return bool(self)
 
 
-class Success(Try_[T]):
+class Success(Try_):
     """Represents a successful computation"""
     __slots__ = ("_v", )
     _fmt = "Success({0})"
 
     @staticmethod
-    def __len__() -> int:
+    def __len__():
         return 1
 
-    def __init__(self, v: T):
-        self._v: T = v
+    def __init__(self, v):
+        self._v = v
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other):
         """
         >>> Success(1) == Success(1)
         True
@@ -253,52 +253,52 @@ class Success(Try_[T]):
         except TypeError as e:
             raise TypeError("Cannot hash try with unhashable value") from e
 
-    def get(self) -> T:
+    def get(self):
         return self._v
 
-    def getOrElse(self, default: T) -> T:
+    def getOrElse(self, default):
         return self.get()
 
-    def orElse(self, default: Try_[T]) -> Try_[T]:
+    def orElse(self, default):
         return self
 
-    def map(self, f: Callable[[T], U]) -> Try_[U]:
+    def map(self, f):
         return Try(f, self._v)
 
-    def flatMap(self, f: Callable[[T], Try_[U]]) -> Try_[U]:
+    def flatMap(self, f):
         v = Try(f, self._v)
         return Try_._identity_if_try_or_raise(v if v.isFailure else v.get())
 
-    def filter(self, f: Callable[[T], bool], exception_cls=Exception, msg=None) -> Try_[T]:
+    def filter(self, f, exception_cls=Exception, msg=None):
         if f(self.get()):
             return self
         else:
             return Failure(exception_cls(msg if msg else repr(f)))
 
-    def recover(self, f: Callable[[Exception], T]) -> Try_[T]:
+    def recover(self, f):
         return self
 
-    def recoverWith(self, f: Callable[[Exception], Try_[T]]) -> Try_[T]:
+    def recoverWith(self, f):
         return self
 
     def failed(self):
         return Failure(TypeError())
 
 
-class Failure(Try_[T]):
+class Failure(Try_):
     """Represents a unsuccessful computation"""
     __slots__ = ("_v", )
     _fmt = "Failure({0})"
 
     @staticmethod
-    def __len__() -> int:
+    def __len__():
         return 0
 
-    def __init__(self, e: Any):
+    def __init__(self, e):
         Try_._raise_if_not_exception(e)
         self._v: Exception = e
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other):
         """
         >>> Failure(Exception("e")) == Failure(Exception("e"))
         True
@@ -323,32 +323,32 @@ class Failure(Try_[T]):
     def get(self):
         raise self._v
 
-    def getOrElse(self, default: T) -> T:
+    def getOrElse(self, default):
         return default
 
-    def orElse(self, default: Try_[T]) -> Try_[T]:
+    def orElse(self, default):
         return Try_._identity_if_try_or_raise(default)
 
-    def map(self, f: Callable[[T], U]) -> "Failure[U]":
+    def map(self, f):
         return Failure(self._v)
 
-    def flatMap(self, f: Callable[[T], Try_[U]]) -> "Failure[U]":
+    def flatMap(self, f):
         return Failure(self._v)
 
-    def filter(self, f: Callable[[T], bool], exception_cls=Exception, msg=None) -> "Failure[T]":
+    def filter(self, f, exception_cls=Exception, msg=None):
         return self
 
-    def recover(self, f: Callable[[Exception], U]) -> Try_[U]:
+    def recover(self, f):
         return Success(self._v).map(f)
 
-    def recoverWith(self, f: Callable[[Exception], Try_[U]]) -> Try_[U]:
+    def recoverWith(self, f):
         return Success(self._v).flatMap(f)
 
     def failed(self):
         return Success(self._v)
 
 
-def Try(f: Callable[..., T], *args, **kwargs) -> Try_[T]:
+def Try(f, *args, **kwargs):
     """Calls f with provided arguments and wraps the result
     using either Success or Failure.
 
