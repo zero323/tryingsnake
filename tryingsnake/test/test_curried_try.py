@@ -16,15 +16,17 @@ class CurriedTryTestCase(unittest.TestCase):
     def test_can_take_kwargs_and_fail(self):
         def f(a, b):
             return a / b
+
         try_f = CurriedTry(f)
-        self.assertTrue(try_f(a=1, b=0).isFailure)               
+        self.assertTrue(try_f(a=1, b=0).isFailure)
 
     def test_can_take_kwargs_and_succeed(self):
         def f(a, b):
             return a + b
+
         try_f = CurriedTry(f)
         self.assertTrue(try_f(a=1, b=3).isSuccess)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()  # pragma: no cover

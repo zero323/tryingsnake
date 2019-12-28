@@ -1,4 +1,4 @@
-__version__ = '0.4.0'
+__version__ = "0.4.0"
 
 from collections.abc import Generator
 
@@ -7,7 +7,7 @@ class Try_:
     _unhandled = ()
 
     @staticmethod
-    def set_unhandled(es = None):
+    def set_unhandled(es=None):
         """Set a list of the unhandled exceptions.
 
         :param es: an iterable of exceptions or None
@@ -35,18 +35,20 @@ class Try_:
         raise NotImplementedError  # pragma: no cover
 
     @staticmethod
-    def _identity_if_try_or_raise(v, msg = "Invalid return type for f: {0}"):
+    def _identity_if_try_or_raise(v, msg="Invalid return type for f: {0}"):
         if not isinstance(v, Try_):
             raise TypeError(msg.format(type(v)))
         return v
 
     @staticmethod
-    def _raise_if_not_exception(e, msg = "Invalid type for Failure: {0}"):
+    def _raise_if_not_exception(e, msg="Invalid type for Failure: {0}"):
         if not isinstance(e, Exception):
             raise TypeError(msg.format(type(e)))
 
     def __init__(self, _):
-        raise NotImplementedError("Use Try function or Success/Failure instead.")  # pragma: no cover
+        raise NotImplementedError(
+            "Use Try function or Success/Failure instead."
+        )  # pragma: no cover
 
     def __ne__(self, other):
         """
@@ -134,7 +136,7 @@ class Try_:
         """
         raise NotImplementedError  # pragma: no cover
 
-    def filter(self, f, exception_cls = Exception, msg = None):
+    def filter(self, f, exception_cls=Exception, msg=None):
         """Convert this to Failure if f(self.get()) evaluates to False
 
         :param f: function to be applied
@@ -221,7 +223,8 @@ class Try_:
 
 class Success(Try_):
     """Represents a successful computation"""
-    __slots__ = ("_v", )
+
+    __slots__ = ("_v",)
     _fmt = "Success({0})"
 
     @staticmethod
@@ -240,8 +243,7 @@ class Success(Try_):
         >>> Success(1) == 1
         False
         """
-        return (isinstance(other, Success) and
-                self._v == other._v)
+        return isinstance(other, Success) and self._v == other._v
 
     def __hash__(self):
         try:
@@ -283,7 +285,8 @@ class Success(Try_):
 
 class Failure(Try_):
     """Represents a unsuccessful computation"""
-    __slots__ = ("_v", )
+
+    __slots__ = ("_v",)
     _fmt = "Failure({0})"
 
     @staticmethod
@@ -304,11 +307,13 @@ class Failure(Try_):
         False
         """
         return (
-            isinstance(other, Failure) and
+            isinstance(other, Failure)
+            and
             # Want to check an exact type so isinstance or issubclass
             # are not good here
-            type(self._v) is type(other._v) and
-            self._v.args == other._v.args)
+            type(self._v) is type(other._v)
+            and self._v.args == other._v.args
+        )
 
     def __hash__(self):
         try:
@@ -343,6 +348,7 @@ class Failure(Try_):
     def failed(self):
         return Success(self._v)
 
+
 def Try(f, *args, **kwargs):
     """Evaluates f with provided arguments and wraps the result
     using either Success or Failure.
@@ -371,7 +377,9 @@ def Try(f, *args, **kwargs):
         elif isinstance(f, Generator) and not args and not kwargs:
             return Success(next(f))
         else:
-            raise TypeError("Don't know how to try {} with {} and {}".format(type(f), args, kwargs))
+            raise TypeError(
+                "Don't know how to try {} with {} and {}".format(type(f), args, kwargs)
+            )
 
     except Try_._unhandled as e:  # type: ignore
         raise e
