@@ -108,6 +108,25 @@ Examples
     ['TypeError', 'ValueError', 'TypeError']
     ```
 
+-   Inline exception handling:
+
+    ```python
+    >>> from tryingsnake.curried import Try
+    >>> map(Try(str.split), ["foo bar", None])  # doctest:+ELLIPSIS
+    <map at ...>
+    ```
+
+-   Decorate your functions
+
+    ```python
+    >>> from tryingsnake.curried import Try as try_
+    >>> @try_
+    ... def scale_imag(x):
+    ...     return complex(x.real, x.imag * 2)
+    >>> [scale_imag(x) for x in [1 + 2j, "3", 42 + 0j]]
+    [Success((1+4j)), Failure(AttributeError("'str' object has no attribute 'real'")), Success((42+0j))]
+    ```
+
 Installation
 ============
 
