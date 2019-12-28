@@ -94,7 +94,7 @@ Examples
     IndexError: list index out of range
     ```
 
--   Make things (relatively) simple
+-   Make things (relatively) simple:
 
     ```python
     >>> import math
@@ -116,7 +116,7 @@ Examples
     <map at ...>
     ```
 
--   Decorate your functions
+-   Decorate your functions:
 
     ```python
     >>> from tryingsnake.curried import Try as try_
@@ -125,6 +125,30 @@ Examples
     ...     return complex(x.real, x.imag * 2)
     >>> [scale_imag(x) for x in [1 + 2j, "3", 42 + 0j]]
     [Success((1+4j)), Failure(AttributeError("'str' object has no attribute 'real'")), Success((42+0j))]
+    ```
+
+-   Wrap generator objects:
+
+    ```python
+    >>> def get_nth(xs, i):
+    ...     yield xs[i]
+    >>> xs = [1, 3, 5, 7]
+    >>> Try(get_nth(xs, 3))
+    Success(7)
+    >>> Try(get_nth(xs, 11))
+    Failure(IndexError('list index out of range'))
+    >>> def f():
+    ...     divisor = 1
+    ...     while True:
+    ...         divisor_ = yield 1 / divisor
+    ...         divisor = divisor_ if divisor_ is not None else 1
+    >>> g = f()
+    >>> next(g)  # Should be primed
+    1.0
+    >>> Try(g, 2)
+    Success(0.5)
+    >>> Try(g, 0)
+    Failure(ZeroDivisionError('division by zero'))
     ```
 
 Installation
