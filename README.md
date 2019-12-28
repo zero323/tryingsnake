@@ -7,6 +7,7 @@ Status](https://travis-ci.org/zero323/tryingsnake.svg?branch=master)](https://tr
 Status](https://coveralls.io/repos/zero323/tryingsnake/badge.svg?branch=master&service=github)](https://coveralls.io/github/zero323/tryingsnake?branch=master)
 [![Code
 Climate](https://codeclimate.com/github/zero323/tryingsnake/badges/gpa.svg)](https://codeclimate.com/github/zero323/tryingsnake)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/zero323/tryingsnake)](https://github.com/zero323/tryingsnake/releases/latest)
 [![PyPI](https://img.shields.io/pypi/v/tryingsnake?color=blue)](https://pypi.org/project/tryingsnake/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/tryingsnake.svg?color=blue)](https://anaconda.org/conda-forge/tryingsnake)
 [![License
