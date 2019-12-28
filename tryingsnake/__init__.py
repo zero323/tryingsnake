@@ -1,5 +1,7 @@
 __version__ = '0.4.0'
 
+from collections.abc import Generator
+
 
 class Try_:
     _unhandled = ()
@@ -341,12 +343,16 @@ class Failure(Try_):
     def failed(self):
         return Success(self._v)
 
-
 def Try(f, *args, **kwargs):
-    """Calls f with provided arguments and wraps the result
+    """Evaluates f with provided arguments and wraps the result
     using either Success or Failure.
 
-    :param f: Callable which should be evaluated
+    :param f: Either Callable or Iterator or Generator which should be evaluated.
+              If f is Callable it is called with given args and kwargs
+              If f is Iterator we evaluate its next
+              If f is Generator and there is single arg we evaluate f.next(arg)
+                In such case f is not primed.
+
     :param args: args which should be passed to f
     :param kwargs: kwargs which should be passed to f
     :return: Either success or Failure
@@ -358,7 +364,15 @@ def Try(f, *args, **kwargs):
     Success(3)
     """
     try:
-        return Success(f(*args, **kwargs))
+        if callable(f):
+            return Success(f(*args, **kwargs))
+        elif isinstance(f, Generator) and len(args) == 1 and not kwargs:
+            return Success(f.send(args[0]))
+        elif isinstance(f, Generator) and not args and not kwargs:
+            return Success(next(f))
+        else:
+            raise TypeError("Don't know how to try {} with {} and {}".format(type(f), args, kwargs))
+
     except Try_._unhandled as e:  # type: ignore
         raise e
     except Exception as e:
