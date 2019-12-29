@@ -22,7 +22,7 @@ install:
 script:
   - pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake
   - if [[ $PYPY = false ]]; then mypy tryingsnake; fi;
-  - if [[ $PYPY = false ]]; then black --check tryingsnake; fi;
+  - if [[ $PYPY = false ]]; then black --check tryingsnake setup.py; fi;
 after_success:
   - coveralls
 deploy:
