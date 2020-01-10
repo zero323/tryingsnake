@@ -7,7 +7,7 @@ matrix:
       env: PYPY=false
     - python: "3.7"
       env: PYPY=false
-    - python: "3.8-dev"
+    - python: "3.8"
       env: PYPY=false
     # - python: "nightly"
     #   env: PYPY=false
