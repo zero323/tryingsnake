@@ -9,8 +9,8 @@ matrix:
       env: PYPY=false
     - python: "3.8-dev"
       env: PYPY=false
-    - python: "nightly"
-      env: PYPY=false
+    # - python: "nightly"
+    #   env: PYPY=false
     - python: "pypy3"
       env: PYPY=true
 
