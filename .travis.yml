@@ -15,12 +15,12 @@ matrix:
       env: PYPY=true
 
 before_script:
-  - pip install coveralls pytest pytest-cov
+  - if [[ $PYPY = false ]]; then pip install coveralls pytest pytest-cov; else pip install pytest; fi
   - if [[ $PYPY = false ]]; then pip install black mypy; fi;
 install:
   - pip install .
 script:
-  - pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake
+  - if [[ $PYPY = false ]]; then pytest --doctest-modules --cov-report=term-missing --cov=tryingsnake  tryingsnake; else pytest --doctest-modules tryingsnake; fi
   - if [[ $PYPY = false ]]; then mypy tryingsnake; fi;
   - if [[ $PYPY = false ]]; then black --check tryingsnake setup.py; fi;
 after_success:
