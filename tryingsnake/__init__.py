@@ -121,7 +121,7 @@ class Try_:
         raise NotImplementedError  # pragma: no cover
 
     def flatMap(self, f):
-        """ Apply function  returning Try_ to the value.
+        """Apply function  returning Try_ to the value.
 
         :param f: function to be applied.
         :return: self if this is a Failure otherwise f applied to self.get
