@@ -13,10 +13,7 @@ setup(
     author="Maciej Szymkiewicz",
     author_email="matthew.szymkiewicz@gmail.com",
     description="Exception handling, the functional way.",
-    package_data={
-        "": ["*.pyi", "py.typed"],
-        "tryingsnake": ["test/*.py"]
-    },
+    package_data={"": ["*.pyi", "py.typed"], "tryingsnake": ["test/*.py"]},
     long_description=(open("README.md").read() if exists("README.md") else ""),
     long_description_content_type="text/markdown",
     classifiers=[
