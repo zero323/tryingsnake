@@ -1,8 +1,6 @@
 TryingSnake
 ===========
-
-[![Build
-Status](https://travis-ci.org/zero323/tryingsnake.svg?branch=master)](https://travis-ci.org/zero323/tryingsnake)
+[![Tests Status](https://github.com/zero323/tryingsnake/actions/workflows/test.yml/badge.svg)](https://github.com/zero323/tryingsnake/actions/workflows/test.yml)
 [![Coverage
 Status](https://coveralls.io/repos/zero323/tryingsnake/badge.svg?branch=master&service=github)](https://coveralls.io/github/zero323/tryingsnake?branch=master)
 [![Code
